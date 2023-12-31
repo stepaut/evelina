@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Db
 {
@@ -13,9 +9,17 @@ namespace Db
 
         public string Description { get; internal set; }
 
+        [JsonIgnore]
         public string Id { get; }
 
+        [JsonIgnore]
         public long CreationDate { get; }
+
+        [JsonIgnore]
+        public string ParentId => "";
+
+        [JsonIgnore]
+        public EItemLevel Level => EItemLevel.Portfolio;
 
 
         private List<Asset> _assets;
@@ -62,15 +66,17 @@ namespace Db
             var now = DateTime.Now.Ticks;
             string uid = Guid.NewGuid().ToString();
 
-            Asset asset = new Asset(uid, now);
+            Asset asset = new Asset(uid, now, Id);
             asset.Name = assetName;
+
+            _assets.Add(asset);
 
             return asset;
         }
 
         public string ToJson()
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Serialize(this);
         }
 
         public async Task<bool> SaveAs(string path)
@@ -92,7 +98,7 @@ namespace Db
 
             try
             {
-                using (PortfolioContext db = new PortfolioContext(_path))
+                using (PortfolioContext db = new PortfolioContext(path))
                 {
                     Thing thisThing = new Thing(this);
                     db.Things.Add(thisThing);
@@ -112,6 +118,11 @@ namespace Db
             }
 
             return true;
+        }
+
+        public void FromJson(string json)
+        {
+            throw new NotImplementedException();
         }
     }
 }
