@@ -12,5 +12,8 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <StackPanel>
+    <Button Command="{Binding OpenPortfolioCommand}" Content="Open portfolio"/>
+    <Button Command="{Binding CreatePortfolioCommand}" Content="Create portfolio"/>
+  </StackPanel>
 </UserControl>
