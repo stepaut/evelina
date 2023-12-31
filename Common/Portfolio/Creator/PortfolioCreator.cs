@@ -8,9 +8,16 @@ namespace Db
 {
     public static class PortfolioCreator
     {
-        public static async Task<IPortfolio> CreatePortfolio()
+        public static async Task<IPortfolio> CreatePortfolio(string name)
         {
-            throw new NotImplementedException();
+            var now = DateTime.Now.Ticks;
+            var uid = Guid.NewGuid().ToString();
+
+            Portfolio portfolio = new Portfolio(uid, now);
+
+            portfolio.Name = name;
+
+            return portfolio;
         }
     }
 }

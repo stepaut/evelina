@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Db;
 using ReactiveUI;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using VisualTools;
@@ -15,7 +16,6 @@ public class MainViewModel : ViewModelBase
     public ICommand CreatePortfolioCommand { get; }
     public ICommand OpenPortfolioCommand { get; }
 
-    public string Greeting => "Welcome to Avalonia!";
 
     public MainViewModel()
     {
@@ -32,7 +32,32 @@ public class MainViewModel : ViewModelBase
 
     private async void CreatePortfolio()
     {
-        IPortfolio portfolio = await PortfolioCreator.CreatePortfolio();
+        var mainWindow = Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null;
+
+        TopLevel topLevel = TopLevel.GetTopLevel(mainWindow);
+
+        IReadOnlyList<IStorageFolder> folders = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        {
+            Title = "Select place for Portfolio",
+            AllowMultiple = false,
+        });
+
+        if (folders.Count == 0)
+        {
+            return;
+        }
+
+        string name = "test";
+
+        IPortfolio portfolio = await PortfolioCreator.CreatePortfolio(name);
+
+        //test
+        portfolio.CreateAsset("aa");
+        portfolio.CreateAsset("bbb");
+
+        string path = Path.Combine(folders[0].Path.ToString(), $"{name}.{Constants.DB_EXTENSION}");
+
+        bool success = await portfolio.SaveAs(path);
     }
 
     private async void OpenPortfolio()
