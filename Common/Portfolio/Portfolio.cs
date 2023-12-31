@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Db
 {
@@ -9,16 +8,12 @@ namespace Db
 
         public string Description { get; internal set; }
 
-        [JsonIgnore]
         public string Id { get; }
 
-        [JsonIgnore]
         public long CreationDate { get; }
 
-        [JsonIgnore]
         public string ParentId => "";
 
-        [JsonIgnore]
         public EItemLevel Level => EItemLevel.Portfolio;
 
 
@@ -26,7 +21,7 @@ namespace Db
         private string _path = null;
 
 
-        internal Portfolio(string id, long creationDate)
+        private Portfolio(string id, long creationDate)
         {
             Id = id;
             CreationDate = creationDate;
@@ -76,7 +71,13 @@ namespace Db
 
         public string ToJson()
         {
-            return JsonSerializer.Serialize(this);
+            PortfolioDTO dto = new PortfolioDTO()
+            {
+                Name = Name,
+                Description = Description,
+            };
+
+            return JsonSerializer.Serialize(dto);
         }
 
         public async Task<bool> SaveAs(string path)
@@ -89,11 +90,27 @@ namespace Db
             return Save_Internal(path);
         }
 
+        public void FromJson(string json)
+        {
+            PortfolioDTO dto = JsonSerializer.Deserialize<PortfolioDTO>(json);
+
+            Name = dto.Name;
+            Description = dto.Description;
+        }
+
+        #region internal
+        public void AddAsset(Asset asset)
+        {
+            _assets.Add(asset);
+        }
+        #endregion
+
+        #region private
         private bool Save_Internal(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             }
 
             try
@@ -119,10 +136,80 @@ namespace Db
 
             return true;
         }
+        #endregion
 
-        public void FromJson(string json)
+        #region static
+        public static Portfolio CreatePortfolio(string name)
         {
-            throw new NotImplementedException();
+            var now = DateTime.Now.Ticks;
+            var uid = Guid.NewGuid().ToString();
+
+            Portfolio portfolio = new Portfolio(uid, now);
+
+            portfolio.Name = name;
+
+            return portfolio;
         }
+
+        public static Portfolio ReadPortfolio(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            try
+            {
+                using (PortfolioContext db = new PortfolioContext(path))
+                {
+                    List<Thing> things = db.Things.ToList();
+                    Portfolio portfolio = ReadThings(things);
+                    return portfolio;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private static Portfolio ReadThings(List<Thing> things)
+        {
+            Thing portfolioThing = null;
+            List<Thing> assetThings = new();
+
+            foreach (Thing thing in things)
+            {
+                if (thing.Level == EItemLevel.Portfolio)
+                {
+                    if (portfolioThing != null)
+                    {
+                        throw new Exception();
+                    }
+                    portfolioThing = thing;
+                }
+                else if (thing.Level == EItemLevel.Asset)
+                {
+                    assetThings.Add(thing);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            Portfolio portfolio = new Portfolio(portfolioThing.Id, portfolioThing.CreationDate);
+            portfolio.FromJson(portfolioThing.JsonValue);
+
+            foreach (Thing thing in assetThings)
+            {
+                Asset asset = new Asset(thing.Id, thing.CreationDate, thing.ParentId);
+                asset.FromJson(thing.JsonValue);
+                portfolio.AddAsset(asset);
+            }
+
+            return portfolio;
+        }
+        #endregion
     }
 }

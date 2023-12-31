@@ -1,22 +1,17 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Db
 {
-    public class Asset : IAsset
+    internal class Asset : IAsset
     {
         public string Name { get; internal set; }
 
-        [JsonIgnore]
         public string Id { get; }
 
-        [JsonIgnore]
         public long CreationDate { get; }
 
-        [JsonIgnore]
         public string ParentId { get; }
 
-        [JsonIgnore]
         public EItemLevel Level => EItemLevel.Asset;
 
 
@@ -27,14 +22,24 @@ namespace Db
             ParentId = parentId;
         }
 
+        public Asset() { }
+
+
         public string ToJson()
         {
-            return JsonSerializer.Serialize(this);
+            AssetDTO dto = new AssetDTO()
+            {
+                Name = Name,
+            };
+
+            return JsonSerializer.Serialize(dto);
         }
 
         public void FromJson(string json)
         {
-            throw new NotImplementedException();
+            AssetDTO dto = JsonSerializer.Deserialize<AssetDTO>(json);
+
+            Name = dto.Name;
         }
     }
 }

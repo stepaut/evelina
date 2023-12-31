@@ -49,7 +49,7 @@ public class MainViewModel : ViewModelBase
 
         string name = "test";
 
-        IPortfolio portfolio = await PortfolioCreator.CreatePortfolio(name);
+        IPortfolio portfolio = PortfolioFactory.CreatePortfolio(name);
 
         //test
         portfolio.CreateAsset("aa");
@@ -78,10 +78,10 @@ public class MainViewModel : ViewModelBase
             return;
         }
 
-        await using var stream = await files[0].OpenReadAsync();
-        using var streamReader = new StreamReader(stream);
-        var fileContent = await streamReader.ReadToEndAsync();
+        //await using var stream = await files[0].OpenReadAsync();
+        //using var streamReader = new StreamReader(stream);
+        //var fileContent = await streamReader.ReadToEndAsync();
 
-        IPortfolio portfolio = await PortfolioReader.ReadPortfolio(fileContent);
+        IPortfolio portfolio = PortfolioFactory.ReadPortfolio(files[0].Path.ToString());
     }
 }
