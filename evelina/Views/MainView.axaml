@@ -12,8 +12,10 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <StackPanel>
-    <Button Command="{Binding OpenPortfolioCommand}" Content="Open portfolio"/>
-    <Button Command="{Binding CreatePortfolioCommand}" Content="Create portfolio"/>
+  <StackPanel Orientation="Horizontal">
+    <StackPanel>
+      <Button Command="{Binding OpenPortfolioCommand}" Content="Open portfolio"/>
+      <Button Command="{Binding CreatePortfolioCommand}" Content="Create portfolio"/>
+    </StackPanel>
   </StackPanel>
 </UserControl>

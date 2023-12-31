@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Db;
+using DialogHostAvalonia;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.IO;
@@ -47,13 +48,12 @@ public class MainViewModel : ViewModelBase
             return;
         }
 
-        string name = "test";
+        var dialog = new InputDialogViewModel("Input name", "Input name of Portfolio");
+        await DialogHost.Show(dialog);
+
+        string name = dialog.Input;
 
         IPortfolio portfolio = PortfolioFactory.CreatePortfolio(name);
-
-        //test
-        portfolio.CreateAsset("aa");
-        portfolio.CreateAsset("bbb");
 
         string path = Path.Combine(folders[0].Path.ToString(), $"{name}.{Constants.DB_EXTENSION}");
 
@@ -77,10 +77,6 @@ public class MainViewModel : ViewModelBase
         {
             return;
         }
-
-        //await using var stream = await files[0].OpenReadAsync();
-        //using var streamReader = new StreamReader(stream);
-        //var fileContent = await streamReader.ReadToEndAsync();
 
         IPortfolio portfolio = PortfolioFactory.ReadPortfolio(files[0].Path.ToString());
     }

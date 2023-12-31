@@ -18,11 +18,18 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Book\Book.csproj" />
     <ProjectReference Include="..\Common\Portfolio\Portfolio.csproj" />
     <ProjectReference Include="..\Common\VisualTools\VisualTools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\InputDialogView.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
