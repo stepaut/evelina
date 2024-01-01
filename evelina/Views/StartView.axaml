@@ -6,8 +6,20 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="evelina.Views.StartView"
              x:DataType="vm:StartViewModel">
-  <StackPanel>
-    <Button Command="{Binding OpenPortfolioCommand}" Content="Open portfolio"/>
-    <Button Command="{Binding CreatePortfolioCommand}" Content="Create portfolio"/>
-  </StackPanel>
+
+  <Border HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+    <Grid RowDefinitions="*,*">
+      <Button Grid.Row="0"
+              HorizontalAlignment="Stretch"
+              Command="{Binding OpenPortfolioCommand}" 
+              Content="Open portfolio"/>
+      
+      <Button Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              Command="{Binding CreatePortfolioCommand}" 
+              Content="Create portfolio"/>
+    </Grid>
+  </Border>
+
 </UserControl>

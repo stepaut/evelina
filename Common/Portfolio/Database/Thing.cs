@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Db
+﻿namespace Db
 {
     internal class Thing
     {
         public string Id { get; set; }
-        [NotMapped]
         public string ParentId { get; set; }
         public long CreationDate { get; set; }
         public string JsonValue { get; set; }
