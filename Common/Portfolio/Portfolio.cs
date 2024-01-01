@@ -129,13 +129,29 @@ namespace Db
             {
                 using (PortfolioContext db = new PortfolioContext(path))
                 {
+                    Dictionary<string, Thing> oldThings = db.Things.ToDictionary(x => x.Id, x => x);
+                    List<Thing> newThings = new();
+
                     Thing thisThing = new Thing(this);
-                    db.Things.Add(thisThing);
+                    newThings.Add(thisThing);
 
                     foreach (Asset asset in _assets)
                     {
                         Thing thing = new Thing(asset);
-                        db.Things.Add(thing);
+                        newThings.Add(thing);
+                    }
+
+                    foreach (var newThing in newThings)
+                    {
+                        if (oldThings.TryGetValue(newThing.Id, out var old))
+                        {
+                            old.JsonValue = newThing.JsonValue;
+                            db.Things.Update(old);
+                        }
+                        else
+                        {
+                            db.Things.Add(newThing);
+                        }
                     }
 
                     db.SaveChanges();
