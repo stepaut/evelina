@@ -16,15 +16,17 @@ namespace Db
 
         public EItemLevel Level => EItemLevel.Portfolio;
 
+        internal string Path { get; private set; } = null;
+
 
         private List<Asset> _assets;
-        private string _path = null;
 
 
-        private Portfolio(string id, long creationDate)
+        private Portfolio(string id, long creationDate, string path = null)
         {
             Id = id;
             CreationDate = creationDate;
+            Path = path;
 
             _assets = new List<Asset>();
         }
@@ -42,12 +44,12 @@ namespace Db
 
         public async Task<bool> Save()
         {
-            if (string.IsNullOrEmpty(_path))
+            if (string.IsNullOrEmpty(Path))
             {
                 return false;
             }
 
-            return Save_Internal(_path);
+            return Save_Internal(Path);
         }
 
         public IAsset CreateAsset(string assetName)
@@ -144,6 +146,11 @@ namespace Db
                 return false;
             }
 
+            if (path != Path)
+            {
+                Path = path;
+            }
+
             return true;
         }
         #endregion
@@ -173,7 +180,8 @@ namespace Db
                 using (PortfolioContext db = new PortfolioContext(path))
                 {
                     List<Thing> things = db.Things.ToList();
-                    Portfolio portfolio = ReadThings(things);
+                    Portfolio portfolio = ReadThings(things, path);
+
                     return portfolio;
                 }
             }
@@ -183,7 +191,7 @@ namespace Db
             }
         }
 
-        private static Portfolio ReadThings(List<Thing> things)
+        private static Portfolio ReadThings(List<Thing> things, string path)
         {
             Thing portfolioThing = null;
             List<Thing> assetThings = new();
@@ -208,7 +216,7 @@ namespace Db
                 }
             }
 
-            Portfolio portfolio = new Portfolio(portfolioThing.Id, portfolioThing.CreationDate);
+            Portfolio portfolio = new Portfolio(portfolioThing.Id, portfolioThing.CreationDate, path);
             portfolio.FromJson(portfolioThing.JsonValue);
 
             foreach (Thing thing in assetThings)

@@ -7,7 +7,12 @@
              x:Class="evelina.Views.PortfolioView"
              x:DataType="vm:PortfolioViewModel">
   <Grid>
-    <Button Content="Close"
+    <StackPanel Orientation="Horizontal">
+      <Button Content="Close"
             Command="{Binding CloseCommand}"/>
+      <TextBlock Text="{Binding Name}"/>
+      <Button Content="Edit"
+              Command="{Binding EditCommand}"/>
+    </StackPanel>
   </Grid>
 </UserControl>

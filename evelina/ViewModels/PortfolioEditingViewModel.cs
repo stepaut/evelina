@@ -65,6 +65,7 @@ namespace evelina.ViewModels
 
         private void Close()
         {
+            TurnBack();
         }
     }
 }
