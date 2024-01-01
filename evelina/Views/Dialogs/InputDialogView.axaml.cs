@@ -13,7 +13,6 @@ namespace evelina.Views
 
         public void Ok_Click(object sender, RoutedEventArgs args)
         {
-            //TODO
         }
 
         public void Cancel_Click(object sender, RoutedEventArgs args)
@@ -22,8 +21,6 @@ namespace evelina.Views
             {
                 vm.Input = string.Empty;
             }
-
-            //TODO
         }
     }
 }

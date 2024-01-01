@@ -4,12 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:evelina.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="evelina.Views.MainView"
-             x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <vm:MainViewModel />
-  </Design.DataContext>
-
-  <ContentControl Content="{Binding ActiveVM}"/>
-  
+             x:Class="evelina.Views.StartView"
+             x:DataType="vm:StartViewModel">
+  <StackPanel>
+    <Button Command="{Binding OpenPortfolioCommand}" Content="Open portfolio"/>
+    <Button Command="{Binding CreatePortfolioCommand}" Content="Create portfolio"/>
+  </StackPanel>
 </UserControl>

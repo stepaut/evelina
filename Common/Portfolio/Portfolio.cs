@@ -98,6 +98,16 @@ namespace Db
             Description = dto.Description;
         }
 
+        public void ChangeName(string newName)
+        {
+            Name = newName;
+        }
+
+        public void ChangeDescription(string newDescription)
+        {
+            Description = newDescription;
+        }
+
         #region internal
         public void AddAsset(Asset asset)
         {

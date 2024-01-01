@@ -2,7 +2,7 @@
 
 namespace evelina.ViewModels
 {
-    public class InputDialogViewModel : ReactiveObject
+    public class InputDialogViewModel : ViewModelBase
     {
         public string Title { get; }
 
@@ -19,6 +19,12 @@ namespace evelina.ViewModels
         {
             Title = title;
             Text = text;
+        }
+
+        public InputDialogViewModel()
+        {
+            Title = "Title";
+            Text = "Text";
         }
     }
 }
