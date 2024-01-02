@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Db
 {
-    public interface ITransaction
+    public interface IEntry
     {
     }
 }

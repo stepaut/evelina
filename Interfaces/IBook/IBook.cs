@@ -13,7 +13,7 @@ namespace Db
         long CreateDate { get; }
 
 
-        IList<ITransaction> GetAllTransactions();
+        IList<IEntry> GetAllTransactions();
 
         IList<ICategory> GetAllCategories();
     }

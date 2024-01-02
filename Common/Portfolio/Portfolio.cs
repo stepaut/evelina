@@ -32,16 +32,6 @@ namespace Db
         }
 
 
-        public IAsset GetAsset(string assetName)
-        {
-            return _assets.FirstOrDefault(x => x.Name.ToLower() == assetName.ToLower());
-        }
-
-        public IList<string> GetAssetNames()
-        {
-            return _assets.Select(x => x.Name).ToList();
-        }
-
         public async Task<bool> Save()
         {
             if (string.IsNullOrEmpty(Path))

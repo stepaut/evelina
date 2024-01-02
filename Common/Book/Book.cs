@@ -17,7 +17,7 @@ namespace Db
             throw new NotImplementedException();
         }
 
-        public IList<ITransaction> GetAllTransactions()
+        public IList<IEntry> GetAllTransactions()
         {
             throw new NotImplementedException();
         }
