@@ -1,5 +1,4 @@
-﻿using evelina.ViewModels;
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace evelina.ViewModels;
 

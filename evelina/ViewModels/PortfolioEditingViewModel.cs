@@ -45,8 +45,8 @@ namespace evelina.ViewModels
             Name = model.Name;
             Description = model.Description;
 
-            ApplyCommand = ReactiveCommand.Create(() => Apply());
-            CancelCommand = ReactiveCommand.Create(() => Close());
+            ApplyCommand = ReactiveCommand.Create(Apply);
+            CancelCommand = ReactiveCommand.Create(Close);
         }
 
 
@@ -58,8 +58,8 @@ namespace evelina.ViewModels
 
         private void Apply()
         {
-            Model.ChangeName(Name);
-            Model.ChangeDescription(Description);
+            Model.Name = Name;
+            Model.Description = Description;
             Close();
         }
 

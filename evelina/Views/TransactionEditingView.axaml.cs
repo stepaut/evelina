@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace evelina.Views
 {
-    public partial class PortfolioEditingView : UserControl
+    public partial class TransactionEditingView : UserControl
     {
-        public PortfolioEditingView()
+        public TransactionEditingView()
         {
             InitializeComponent();
         }

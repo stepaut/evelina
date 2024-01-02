@@ -14,9 +14,46 @@
       <Grid Margin="4">
         <TextBlock Text="{Binding Name}"
                    HorizontalAlignment="Center"/>
-        <!--<Button Content="Edit"
+        <Button Content="Edit"
                 Command="{Binding EditCommand}"
-                HorizontalAlignment="Right"/>-->
+                HorizontalAlignment="Right"/>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1">
+      <Grid ColumnDefinitions="4*,*">
+
+
+        <Border Grid.Column="1"
+                BorderThickness="1"
+                BorderBrush="Gray">
+          <Grid RowDefinitions="*,auto">
+            <ListBox Grid.Row="0"
+                     ItemsSource="{Binding Transactions}"
+                     SelectionMode="Single"
+                     Background="White"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:TransactionViewModel">
+                  <Border>
+                    <Grid RowDefinitions="*,*">
+                      <TextBlock Grid.Row="0"
+                                 Text="{Binding DisplayName}"/>
+                      <TextBlock Grid.Row="1"
+                                 Text="{Binding DisplayDesctiption}"/>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="1"
+                    Content="Create new"
+                    Command="{Binding CreateTransactionCommand}"
+                    HorizontalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"/>
+          </Grid>
+        </Border>
       </Grid>
     </Border>
   </Grid>

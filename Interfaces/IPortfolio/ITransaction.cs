@@ -2,14 +2,10 @@
 {
     public interface ITransaction : IItem
     {
-        long Datetime { get; }
-
-        ETransaction Type { get; }
-
-        double Price { get; }
-
-        double Amount { get; }
-
-        string Note { get; }
+        long Datetime { get; set; }
+        ETransaction Type { get; set; }
+        double Price { get; set; }
+        double Amount { get; set; }
+        string Note { get; set; }
     }
 }

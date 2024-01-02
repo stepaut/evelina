@@ -31,7 +31,7 @@
         <Border Grid.Column="0"
                 BorderThickness="1"
                 BorderBrush="Gray">
-          <Grid RowDefinitions="auto,auto">
+          <Grid RowDefinitions="*,auto">
             <ListBox Grid.Row="0"
                      ItemsSource="{Binding Assets}"
                      SelectedItem="{Binding SelectedAsset}"

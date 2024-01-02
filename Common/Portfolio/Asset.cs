@@ -2,32 +2,22 @@
 
 namespace Db
 {
-    internal class Asset : IAsset
+    internal class Asset : Item, IAsset
     {
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
-        public string Id { get; }
-
-        public long CreationDate { get; }
-
-        public string ParentId { get; }
-
-        public EItemLevel Level => EItemLevel.Asset;
 
         private List<Transaction> _transactions;
 
 
-        internal Asset(string id, long creationDate, string parentId)
+        internal Asset(string id, long creationDate, string parentId) : base(id, creationDate, parentId)
         {
-            Id = id;
-            CreationDate = creationDate;
-            ParentId = parentId;
-
+            Level = EItemLevel.Asset;
             _transactions = new List<Transaction>();
         }
 
 
-        public string ToJson()
+        public override string ToJson()
         {
             AssetDTO dto = new AssetDTO()
             {
@@ -37,7 +27,7 @@ namespace Db
             return JsonSerializer.Serialize(dto);
         }
 
-        public void FromJson(string json)
+        public override void FromJson(string json)
         {
             AssetDTO dto = JsonSerializer.Deserialize<AssetDTO>(json);
 
@@ -68,6 +58,16 @@ namespace Db
 
             _transactions.Add(transaction);
             return transaction;
+        }
+    
+        internal void AddTransaction(Transaction transaction)
+        {
+            if (transaction.ParentId != Id)
+            {
+                throw new InvalidOperationException();
+            }
+
+            _transactions.Add(transaction);
         }
     }
 }

@@ -2,32 +2,22 @@
 
 namespace Db
 {
-    internal class Portfolio : IPortfolio
+    internal class Portfolio : Item, IPortfolio
     {
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
-        public string Id { get; }
-
-        public long CreationDate { get; }
-
-        public string ParentId => "";
-
-        public EItemLevel Level => EItemLevel.Portfolio;
-
-        internal string Path { get; private set; } = null;
+        internal string Path { get; private set; }
 
 
         private List<Asset> _assets;
 
 
-        private Portfolio(string id, long creationDate, string path = null)
+        private Portfolio(string id, long creationDate, string path = null) : base(id, creationDate, "")
         {
-            Id = id;
-            CreationDate = creationDate;
             Path = path;
-
+            Level = EItemLevel.Portfolio;
             _assets = new List<Asset>();
         }
 
@@ -55,7 +45,7 @@ namespace Db
             return asset;
         }
 
-        public string ToJson()
+        public override string ToJson()
         {
             PortfolioDTO dto = new PortfolioDTO()
             {
@@ -76,22 +66,12 @@ namespace Db
             return Save_Internal(path);
         }
 
-        public void FromJson(string json)
+        public override void FromJson(string json)
         {
             PortfolioDTO dto = JsonSerializer.Deserialize<PortfolioDTO>(json);
 
             Name = dto.Name;
             Description = dto.Description;
-        }
-
-        public void ChangeName(string newName)
-        {
-            Name = newName;
-        }
-
-        public void ChangeDescription(string newDescription)
-        {
-            Description = newDescription;
         }
 
         #region internal
@@ -123,6 +103,12 @@ namespace Db
                     {
                         Thing thing = new Thing(asset);
                         newThings.Add(thing);
+
+                        foreach (Transaction transaction in asset.GetTransactions())
+                        {
+                            Thing thingTr = new Thing(transaction);
+                            newThings.Add(thingTr);
+                        }
                     }
 
                     foreach (var newThing in newThings)
@@ -195,6 +181,7 @@ namespace Db
         {
             Thing portfolioThing = null;
             List<Thing> assetThings = new();
+            List<Thing> trThings = new();
 
             foreach (Thing thing in things)
             {
@@ -210,6 +197,10 @@ namespace Db
                 {
                     assetThings.Add(thing);
                 }
+                else if (thing.Level == EItemLevel.Transaction)
+                {
+                    trThings.Add(thing);
+                }
                 else
                 {
                     throw new NotImplementedException();
@@ -224,6 +215,23 @@ namespace Db
                 Asset asset = new Asset(thing.Id, thing.CreationDate, thing.ParentId);
                 asset.FromJson(thing.JsonValue);
                 portfolio.AddAsset(asset);
+            }
+
+            var assets = portfolio.GetAssets();
+
+            foreach (Thing thing in trThings)
+            {
+                Transaction transaction = new Transaction(thing.Id, thing.CreationDate, thing.ParentId);
+                transaction.FromJson(thing.JsonValue);
+
+                Asset parent = assets.FirstOrDefault(x => x.Id == thing.ParentId) as Asset;
+
+                if (parent is null)
+                {
+                    throw new Exception();//TODO
+                }
+
+                parent.AddTransaction(transaction);
             }
 
             return portfolio;

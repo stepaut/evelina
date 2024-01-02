@@ -2,37 +2,26 @@
 
 namespace Db
 {
-    internal class Transaction : ITransaction
+    internal class Transaction : Item, ITransaction
     {
-        public long Datetime { get; internal set; }
+        public long Datetime { get; set; }
 
-        public ETransaction Type { get; internal set; }
+        public ETransaction Type { get; set; }
 
-        public double Price { get; internal set; }
+        public double Price { get; set; }
 
-        public double Amount { get; internal set; }
+        public double Amount { get; set; }
 
-        public string Note { get; internal set; }
-
-        public string Id { get; }
-
-        public string ParentId { get; }
-
-        public long CreationDate { get; }
-
-        public EItemLevel Level { get; }
+        public string Note { get; set; }
 
 
-        public Transaction(string id, long creationDate, string parentId)
+        public Transaction(string id, long creationDate, string parentId) : base(id, creationDate, parentId)
         {
-            Id = id;
-            CreationDate = creationDate;
-            ParentId = parentId;
             Level = EItemLevel.Transaction;
         }
 
 
-        public void FromJson(string json)
+        public override void FromJson(string json)
         {
             TransactionDTO dto = JsonSerializer.Deserialize<TransactionDTO>(json);
 
@@ -43,7 +32,7 @@ namespace Db
             Note = dto.Note;
         }
 
-        public string ToJson()
+        public override string ToJson()
         {
             TransactionDTO dto = new TransactionDTO()
             {

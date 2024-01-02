@@ -71,7 +71,7 @@ namespace evelina.ViewModels
             }
 
             var portfolioVM = new PortfolioViewModel(portfolio, _main);
-            portfolioVM.ReturnBackEvent += () => { _main.ActiveVM = this; };
+            //portfolioVM.ReturnBackEvent += () => { _main.ActiveVM = this; };
             _main.ActiveVM = portfolioVM;
         }
 
@@ -96,7 +96,6 @@ namespace evelina.ViewModels
             IPortfolio portfolio = PortfolioFactory.ReadPortfolio(files[0].Path.ToString());
 
             var portfolioVM = new PortfolioViewModel(portfolio, _main);
-            portfolioVM.ReturnBackEvent += () => { _main.ActiveVM = this; };
             _main.ActiveVM = portfolioVM;
         }
     }

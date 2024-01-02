@@ -2,7 +2,7 @@
 {
     public interface IAsset : IItem
     {
-        string Name { get; }
+        string Name { get; set; }
 
 
         IList<ITransaction> GetTransactions();

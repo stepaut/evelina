@@ -2,8 +2,8 @@
 {
     public interface IPortfolio : IItem
     {
-        string Name { get; }
-        string Description { get; }
+        string Name { get; set; }
+        string Description { get; set; }
 
 
         IAsset CreateAsset(string assetName);
@@ -11,8 +11,5 @@
 
         Task<bool> Save();
         Task<bool> SaveAs(string path);
-
-        void ChangeName(string newName);
-        void ChangeDescription(string newDescription);
     }
 }

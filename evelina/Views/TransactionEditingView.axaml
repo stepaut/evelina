@@ -4,20 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:evelina.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="evelina.Views.PortfolioEditingView"
-             x:DataType="vm:PortfolioEditingViewModel">
+             x:Class="evelina.Views.TransactionEditingView"
+             x:DataType="vm:TransactionEditingViewModel">
+  
   <Grid HorizontalAlignment="Center"
         VerticalAlignment="Center"
-        RowDefinitions="*,*,*">
+        RowDefinitions="*,*,*,*,*,*">
     <StackPanel Grid.Row="0">
-      <TextBlock Text="Name"/>
-      <TextBox Text="{Binding Name}"/>
+      <TextBlock Text="Datetime"/>
+      <DatePicker SelectedDate="{Binding Datetime}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="Description"/>
-      <TextBox Text="{Binding Description}"/>
+      <TextBlock Text="Type"/>
+      <ComboBox ItemsSource="{Binding Types}"
+                  SelectedItem="{Binding Type}" />
     </StackPanel>
-    <Grid Grid.Row="2"
+    <StackPanel Grid.Row="2">
+      <TextBlock Text="Price"/>
+      <TextBox Text="{Binding Price}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="3">
+      <TextBlock Text="Amount"/>
+      <TextBox Text="{Binding Amount}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="4">
+      <TextBlock Text="Note"/>
+      <TextBox Text="{Binding Note}"/>
+    </StackPanel>
+    <Grid Grid.Row="5"
           ColumnDefinitions="*,*">
       <Button Grid.Column="0"
               HorizontalAlignment="Left"
@@ -28,7 +42,6 @@
               HorizontalAlignment="Right"
               Content="Cancel"
               Command="{Binding CancelCommand}"/>
-
     </Grid>
   </Grid>
 </UserControl>

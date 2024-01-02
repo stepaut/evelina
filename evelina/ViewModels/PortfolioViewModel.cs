@@ -67,13 +67,13 @@ namespace evelina.ViewModels
         private void EditPortfoliInfo()
         {
             var editorVM = new PortfolioEditingViewModel(Model, _main);
-            editorVM.ReturnBackEvent += () => { _main.ActiveVM = this; };
             _main.ActiveVM = editorVM;
         }
 
         private void AddAsset(IAsset asset)
         {
-            AssetViewModel vm = new AssetViewModel(asset);
+            AssetViewModel vm = new AssetViewModel(asset, _main);
+
             Assets.Add(vm);
         }
 
