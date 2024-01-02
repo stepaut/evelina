@@ -54,12 +54,6 @@ namespace Db
 
         public IAsset CreateAsset(string assetName)
         {
-            var existed = GetAsset(assetName);
-            if (existed != null)
-            {
-                return existed;
-            }
-
             var now = DateTime.Now.Ticks;
             string uid = Guid.NewGuid().ToString();
 
@@ -243,6 +237,16 @@ namespace Db
             }
 
             return portfolio;
+        }
+
+        public IList<IAsset> GetAssets()
+        {
+            IList<IAsset> assets = new List<IAsset>();
+            foreach (IAsset asset in _assets)
+            {
+                assets.Add(asset);
+            }
+            return assets;
         }
         #endregion
     }

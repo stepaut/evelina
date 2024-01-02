@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                           xmlns:vm="clr-namespace:evelina.ViewModels"
+                     xmlns:view="clr-namespace:evelina.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="evelina.Views.PortfolioView"
              x:DataType="vm:PortfolioViewModel">
@@ -10,7 +11,7 @@
   <Grid RowDefinitions="auto,*">
 
     <Border Grid.Row="0"
-          HorizontalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
             BorderThickness="1"
             BorderBrush="Gray">
       <Grid Margin="4">
@@ -30,10 +31,31 @@
         <Border Grid.Column="0"
                 BorderThickness="1"
                 BorderBrush="Gray">
-          <ListBox>
-            
-          </ListBox>
+          <Grid RowDefinitions="auto,auto">
+            <ListBox Grid.Row="0"
+                     ItemsSource="{Binding Assets}"
+                     SelectedItem="{Binding SelectedAsset}"
+                     SelectionMode="Single"
+                     Background="White"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:AssetViewModel">
+                  <Border>
+                    <TextBlock Text="{Binding Name}"/>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="1"
+                    Content="Create new"
+                    Command="{Binding CreateAssetCommand}"
+                    HorizontalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"/>
+          </Grid>
         </Border>
+        <view:AssetView Grid.Column="1"
+                        DataContext="{Binding SelectedAsset}"/>
       </Grid>
     </Border>
 
