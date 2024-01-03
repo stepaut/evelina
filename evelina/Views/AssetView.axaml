@@ -34,14 +34,30 @@
                      Background="White"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+              <!--<ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                  <Setter Property="Padding" Value="0"/>
+                </Style>
+              </ListBox.Styles>-->
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="vm:TransactionViewModel">
-                  <Border>
-                    <Grid RowDefinitions="*,*">
-                      <TextBlock Grid.Row="0"
-                                 Text="{Binding DisplayName}"/>
-                      <TextBlock Grid.Row="1"
-                                 Text="{Binding DisplayDesctiption}"/>
+                  <Border Background="Transparent">
+                    <Border.ContextMenu>
+                      <ContextMenu>
+                        <MenuItem Header="Edit"
+                                  Command="{Binding EditCommand}"/>
+                        <MenuItem Header="Delete"
+                                  Command="{Binding DeleteCommand}"/>
+                      </ContextMenu>
+                    </Border.ContextMenu>
+                    <Grid ColumnDefinitions="*,auto">
+                      <Grid Grid.Column="0"
+                            RowDefinitions="*,*">
+                        <TextBlock Grid.Row="0"
+                                   Text="{Binding DisplayName}"/>
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding DisplayDesctiption}"/>
+                      </Grid>
                     </Grid>
                   </Border>
                 </DataTemplate>

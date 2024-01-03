@@ -38,6 +38,8 @@ namespace evelina.ViewModels
         {
             foreach (var transaction in Transactions)
             {
+                transaction.DeleteMeEvent -= DeleteTransaction;
+                transaction.EditMeEvent -= EditTransaction;
                 transaction.Dispose();
             }
             Transactions.Clear();
@@ -48,7 +50,24 @@ namespace evelina.ViewModels
         internal void AddTransaction(ITransaction transaction)
         {
             TransactionViewModel vm = new TransactionViewModel(transaction);
+            vm.DeleteMeEvent += DeleteTransaction;
+            vm.EditMeEvent += EditTransaction;
             Transactions.Add(vm);
+        }
+
+        private void EditTransaction(TransactionViewModel vm)
+        {
+            TransactionEditingViewModel editorVM = new TransactionEditingViewModel(vm.Model, _main);
+            _main.ActiveVM = editorVM;
+        }
+
+        private void DeleteTransaction(TransactionViewModel vm)
+        {
+            //TODO
+
+            vm.EditMeEvent -= EditTransaction;
+            vm.DeleteMeEvent -= DeleteTransaction;
+            Transactions.Remove(vm);
         }
 
         private void CreateTransaction()
