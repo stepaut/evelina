@@ -8,5 +8,7 @@
         IList<ITransaction> GetTransactions();
 
         ITransaction CreateTransaction(long datetime, ETransaction type, double price, double amount, string note = null);
+
+        void DeleteTransaction(ITransaction transaction);
     }
 }

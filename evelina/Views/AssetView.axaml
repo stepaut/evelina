@@ -34,14 +34,25 @@
                      Background="White"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Visible">
-              <!--<ListBox.Styles>
+              <ListBox.Styles>
                 <Style Selector="ListBoxItem">
-                  <Setter Property="Padding" Value="0"/>
+                  <!--<Setter Property="Padding" Value="0"/>-->
+                  <!--<Setter Property="ContextMenu">
+                    <Setter.Value>
+                      <ContextMenu>
+                        <MenuItem Header="Edit"
+                                  Command="{Binding EditCommand}"/>
+                        <MenuItem Header="Delete"
+                                  Command="{Binding DeleteCommand}"/>
+                      </ContextMenu>
+                    </Setter.Value>
+                  </Setter>-->
                 </Style>
-              </ListBox.Styles>-->
+              </ListBox.Styles>
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="vm:TransactionViewModel">
-                  <Border Background="Transparent">
+                  <Border Background="Transparent"
+                          DoubleTapped="Border_DoubleTapped">
                     <Border.ContextMenu>
                       <ContextMenu>
                         <MenuItem Header="Edit"
@@ -50,9 +61,11 @@
                                   Command="{Binding DeleteCommand}"/>
                       </ContextMenu>
                     </Border.ContextMenu>
-                    <Grid ColumnDefinitions="*,auto">
+                    <Grid ColumnDefinitions="*,auto"
+                          Background="Transparent">
                       <Grid Grid.Column="0"
-                            RowDefinitions="*,*">
+                            RowDefinitions="*,*"
+                            Background="Transparent">
                         <TextBlock Grid.Row="0"
                                    Text="{Binding DisplayName}"/>
                         <TextBlock Grid.Row="1"

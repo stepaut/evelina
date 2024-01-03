@@ -60,6 +60,18 @@ namespace Db
             return transaction;
         }
     
+        public void DeleteTransaction(ITransaction transaction)
+        {
+            Transaction real = transaction as Transaction;
+
+            if (!_transactions.Contains(real))
+            {
+                throw new InvalidOperationException();
+            }
+
+            _transactions.Remove(real);
+        }
+
         internal void AddTransaction(Transaction transaction)
         {
             if (transaction.ParentId != Id)

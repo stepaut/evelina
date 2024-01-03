@@ -29,7 +29,9 @@
     </StackPanel>
     <StackPanel Grid.Row="4">
       <TextBlock Text="Note"/>
-      <TextBox Text="{Binding Note}"/>
+      <TextBox Text="{Binding Note}"
+               AcceptsReturn="True" 
+               TextWrapping="Wrap"/>
     </StackPanel>
     <Grid Grid.Row="5"
           ColumnDefinitions="*,*">

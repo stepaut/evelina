@@ -94,24 +94,24 @@ namespace Db
                 using (PortfolioContext db = new PortfolioContext(path))
                 {
                     Dictionary<string, Thing> oldThings = db.Things.ToDictionary(x => x.Id, x => x);
-                    List<Thing> newThings = new();
+                    Dictionary<string, Thing> newThings = new();
 
                     Thing thisThing = new Thing(this);
-                    newThings.Add(thisThing);
+                    newThings[thisThing.Id] = thisThing;
 
                     foreach (Asset asset in _assets)
                     {
                         Thing thing = new Thing(asset);
-                        newThings.Add(thing);
+                        newThings[thing.Id] = thing;
 
                         foreach (Transaction transaction in asset.GetTransactions())
                         {
                             Thing thingTr = new Thing(transaction);
-                            newThings.Add(thingTr);
+                            newThings[thingTr.Id] = thingTr;
                         }
                     }
 
-                    foreach (var newThing in newThings)
+                    foreach (var newThing in newThings.Values)
                     {
                         if (oldThings.TryGetValue(newThing.Id, out var old))
                         {
@@ -121,6 +121,14 @@ namespace Db
                         else
                         {
                             db.Things.Add(newThing);
+                        }
+                    }
+
+                    foreach (var oldThing in oldThings.Values)
+                    {
+                        if (!newThings.TryGetValue(oldThing.Id, out _))
+                        {
+                            db.Things.Remove(oldThing);
                         }
                     }
 

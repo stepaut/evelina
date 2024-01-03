@@ -63,7 +63,7 @@ namespace evelina.ViewModels
 
         private void DeleteTransaction(TransactionViewModel vm)
         {
-            //TODO
+            Model.DeleteTransaction(vm.Model);
 
             vm.EditMeEvent -= EditTransaction;
             vm.DeleteMeEvent -= DeleteTransaction;

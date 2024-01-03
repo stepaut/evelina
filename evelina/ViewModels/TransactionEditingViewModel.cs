@@ -32,15 +32,15 @@ namespace evelina.ViewModels
             get => Enum.GetValues(typeof(ETransaction)).Cast<ETransaction>();
         }
 
-        private double _price;
-        public double Price
+        private double? _price;
+        public double? Price
         {
             get => _price;
             set => this.RaiseAndSetIfChanged(ref _price, value);
         }
 
-        private double _amount;
-        public double Amount
+        private double? _amount;
+        public double? Amount
         {
             get => _amount;
             set => this.RaiseAndSetIfChanged(ref _amount, value);
@@ -71,6 +71,12 @@ namespace evelina.ViewModels
         {
             _assetVM = null;
             _transaction = transaction;
+
+            Datetime = new DateTimeOffset(new DateTime(transaction.Datetime));
+            Type = transaction.Type;
+            Amount = transaction.Amount;
+            Price = transaction.Price;
+            Note = transaction.Note;
         }
 
         private TransactionEditingViewModel(MainViewModel main) : base(main)
@@ -88,18 +94,24 @@ namespace evelina.ViewModels
 
         private void Apply()
         {
+            if (!Price.HasValue || !Amount.HasValue)
+            {
+                //TODO
+                return;
+            }
+
             if (_transaction is null)
             {
                 // create new transaction
-                ITransaction transaction = _assetVM.Model.CreateTransaction(Datetime.Ticks, Type, Price, Amount, Note);
+                ITransaction transaction = _assetVM.Model.CreateTransaction(Datetime.Ticks, Type, Price.Value, Amount.Value, Note);
                 _assetVM.AddTransaction(transaction);
             }
             else
             {
                 _transaction.Datetime = Datetime.Ticks;
                 _transaction.Type = Type;
-                _transaction.Price = Price;
-                _transaction.Amount = Amount;
+                _transaction.Price = Price.Value;
+                _transaction.Amount = Amount.Value;
                 _transaction.Note = Note;
             }
 
