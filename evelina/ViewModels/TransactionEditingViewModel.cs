@@ -1,4 +1,6 @@
 ﻿using Db;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -92,11 +94,13 @@ namespace evelina.ViewModels
             _transaction = null;
         }
 
-        private void Apply()
+        private async void Apply()
         {
             if (!Price.HasValue || !Amount.HasValue)
             {
-                //TODO
+                var box = MessageBoxManager.GetMessageBoxStandard("Warning", "Fill Amount and Price!", ButtonEnum.Ok);
+                
+                await box.ShowAsync();
                 return;
             }
 

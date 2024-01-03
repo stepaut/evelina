@@ -9,6 +9,7 @@
   
   <Grid HorizontalAlignment="Center"
         VerticalAlignment="Center"
+        Width="300"
         RowDefinitions="*,*,*,*,*,*">
     <StackPanel Grid.Row="0">
       <TextBlock Text="Datetime"/>
