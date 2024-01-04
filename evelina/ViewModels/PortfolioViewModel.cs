@@ -21,7 +21,6 @@ namespace evelina.ViewModels
         public ICommand EditCommand { get; }
         public ICommand CreateAssetCommand { get; }
         public ICommand SaveCommand { get; }
-        public ICommand SaveAsCommand { get; }
         public ICommand ImportCommand { get; }
         public ICommand ExportCommand { get; }
 
@@ -36,7 +35,7 @@ namespace evelina.ViewModels
             set => this.RaiseAndSetIfChanged(ref _selectedAsset, value);
         }
 
-        public ObservableCollection<AssetViewModel> Assets { get; } = new();
+        public ObservableCollection<AssetViewModel> Assets { get; private set; }
 
 
         internal IPortfolio Model { get; private set; }
@@ -47,13 +46,16 @@ namespace evelina.ViewModels
             Model = model;
             Model.UpdateVisualStatEvent += Model_UpdateVisualStatEvent;
 
+            Assets = new();
             foreach (IAsset existed in model.GetAssets())
             {
                 AddAsset(existed);
             }
+            RefreshAssets();
             SelectedAsset = Assets.FirstOrDefault();
 
             CloseCommand = ReactiveCommand.Create(Close);
+            SaveCommand = ReactiveCommand.Create(Save);
             EditCommand = ReactiveCommand.Create(EditPortfoliInfo);
             CreateAssetCommand = ReactiveCommand.Create(CreateAsset);
             ImportCommand = ReactiveCommand.Create(Import);
@@ -84,13 +86,21 @@ namespace evelina.ViewModels
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.Volume));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.SellPrice));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.Share));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.BuyedVolume));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.BuyedShare));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.Status));
             }
         }
 
         private void Close()
         {
-            Model.Save();
+            Save();
             TurnBack();
+        }
+
+        private void Save()
+        {
+            Model.Save();
         }
 
         private void EditPortfoliInfo()
@@ -179,7 +189,13 @@ namespace evelina.ViewModels
             {
                 AddAsset(existed);
             }
+            RefreshAssets();
             SelectedAsset ??= Assets.FirstOrDefault();
+        }
+
+        internal void RefreshAssets()
+        {
+            Assets = new ObservableCollection<AssetViewModel>(Assets.OrderBy(x => x.Name));
         }
     }
 }

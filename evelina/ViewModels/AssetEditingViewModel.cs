@@ -92,6 +92,7 @@ namespace evelina.ViewModels
                 asset.TargetShare = TargetShare;
 
                 _portfolioVM.AddAsset(asset);
+                _portfolioVM.RefreshAssets();
             }
             else
             {

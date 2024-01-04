@@ -1,4 +1,6 @@
-﻿namespace Db
+﻿using System.ComponentModel;
+
+namespace Db
 {
     public enum EItemLevel
     {
@@ -11,5 +13,17 @@
     {
         Buy = 0,
         Sell = 1,
+    }
+
+    public enum EAssetStatus
+    {
+        [Description("waiting")]
+        Waiting,
+        [Description("buyed")]
+        Buyed,
+        [Description("buyed fully")]
+        Buyed_fully,
+        [Description("Free")]
+        Free,
     }
 }

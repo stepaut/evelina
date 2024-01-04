@@ -8,8 +8,28 @@
   </Design.PreviewWith>
 
   <Styles.Resources>
-      <ControlTheme x:Key="CommonNumber" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="18"/>
-      </ControlTheme>
+    <ControlTheme x:Key="CommonTextBlock" TargetType="TextBlock">
+      <Setter Property="Margin" Value="4"/>
+    </ControlTheme>
+
+    <ControlTheme x:Key="CommonNumber" TargetType="TextBlock" BasedOn="{StaticResource CommonTextBlock}">
+      <Setter Property="FontSize" Value="18"/>
+    </ControlTheme>
   </Styles.Resources>
+
+  <Style Selector="TextBlock.h1">
+    <Setter Property="FontSize" Value="24"/>
+  </Style>
+
+  <Style Selector="TextBlock.h2">
+    <Setter Property="FontSize" Value="22"/>
+  </Style>
+
+  <Style Selector="TextBlock.h3">
+    <Setter Property="FontSize" Value="20"/>
+  </Style>
+
+  <Style Selector="TextBlock.h4">
+    <Setter Property="FontSize" Value="18"/>
+  </Style>
 </Styles>

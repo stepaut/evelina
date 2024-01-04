@@ -23,9 +23,35 @@ namespace evelina.ViewModels
         public double? TargetVolume => Model?.TargetVolume;
         public double? TargetSellPrice => Model?.TargetSellPrice;
         public double? TargetShare => Model?.TargetShare;
-        public double? Volume => Model?.Volume;
+        public double? Volume
+        {
+            get
+            {
+                if (Model?.Volume < IPortfolio.POSSIBLE_DELTA)
+                {
+                    return null;
+                }
+
+                return Model?.Volume;
+            }
+        }
         public double? SellPrice => Model?.SellPrice;
-        public double? Share => Model?.Share;
+        public double? Share
+        {
+            get
+            {
+                if (Model?.Share < IPortfolio.POSSIBLE_DELTA / 100)
+                {
+                    return null;
+                }
+
+                return Model?.Share;
+            }
+        }
+        public double? BuyedVolume => Model?.BuyedVolume;
+        public double? BuyedShare => Model?.BuyedShare;
+        public EAssetStatus? Status => Model?.Status;
+        public bool? IsFree => Status is EAssetStatus.Free;
 
         public ObservableCollection<TransactionViewModel> Transactions { get; } = new();
 

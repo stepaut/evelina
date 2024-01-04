@@ -5,6 +5,7 @@
     public interface IPortfolio : IItem
     {
         event UpdateVisualStat UpdateVisualStatEvent;
+        const double POSSIBLE_DELTA = 1;
 
         #region required
         string Name { get; set; }

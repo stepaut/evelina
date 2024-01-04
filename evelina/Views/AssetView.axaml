@@ -12,9 +12,20 @@
             BorderThickness="0,0,0,1"
             BorderBrush="Gray">
       <Grid Margin="4">
-        <TextBlock Text="{Binding Name}"
-                   HorizontalAlignment="Center"
-                   FontSize="22"/>
+        <Grid HorizontalAlignment="Left"
+              ColumnDefinitions="*,*">
+          <TextBlock Grid.Column="0"
+                Text="{Binding Name}"
+                     Theme="{StaticResource CommonTextBlock}"
+               Classes="h2"/>
+
+          <TextBlock Grid.Column="1"
+               Text="{Binding Status, Converter={StaticResource EnumDescriptionConverter}}"
+                     Theme="{StaticResource CommonTextBlock}"
+               VerticalAlignment="Bottom"
+               Classes="h4"/>
+        </Grid>
+
         <Grid HorizontalAlignment="Right"
               ColumnDefinitions="*,*">
           <Button Grid.Column="0"
@@ -33,28 +44,58 @@
           <Grid RowDefinitions="auto,*">
             <Grid Grid.Row="0"
                   ColumnDefinitions="*,*,*">
-              <StackPanel Grid.Column="0"
+              
+              <!-- volume -->
+              <Grid Grid.Column="0"
+                    RowDefinitions="*,*,*"
                           Margin="4">
-                <TextBlock Text="Target Volume"/>
-                <TextBlock Text="{Binding TargetVolume, StringFormat={}{0:f2}}"
-                           Theme="{StaticResource CommonNumber}"/>
-                <TextBlock Text="Volume"/>
+                <StackPanel Grid.Row="0">
+                  <TextBlock Text="Target Volume"/>
+                  <TextBlock Text="{Binding TargetVolume, StringFormat={}{0:f2}}"
+                             Theme="{StaticResource CommonNumber}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="1">
+                <TextBlock Text="Current Volume"/>
                 <TextBlock Text="{Binding Volume, StringFormat={}{0:f2}}"
                            Theme="{StaticResource CommonNumber}"
                            FontWeight="Bold"/>
-              </StackPanel>
-              
-              <StackPanel Grid.Column="1"
+                </StackPanel>
+                
+                <StackPanel Grid.Row="2">
+                <TextBlock Text="Buyed Volume"/>
+                <TextBlock Text="{Binding BuyedVolume, StringFormat={}{0:f2}}"
+                           Theme="{StaticResource CommonNumber}"
+                           FontStyle="Italic"/>
+                </StackPanel>
+              </Grid>
+
+              <!-- share -->
+              <Grid Grid.Column="1"
+                    RowDefinitions="*,*,*"
                           Margin="4">
+                <StackPanel Grid.Row="0">
                 <TextBlock Text="Target Share"/>
-                <TextBlock Text="{Binding TargetShare, StringFormat={}{0:f2} %}"
+                <TextBlock Text="{Binding TargetShare, StringFormat={}{0:f1} %}"
                            Theme="{StaticResource CommonNumber}"/>
-                <TextBlock Text="Share"/>
-                <TextBlock Text="{Binding Share, StringFormat={}{0:f2} %}"
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                <TextBlock Text="Current Share"/>
+                <TextBlock Text="{Binding Share, StringFormat={}{0:f1} %}"
+                           IsVisible="{Binding !IsFree}"
                            Theme="{StaticResource CommonNumber}"
                            FontWeight="Bold"/>
-              </StackPanel>
-              
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                <TextBlock Text="Buyed Share"/>
+                <TextBlock Text="{Binding BuyedShare, StringFormat={}{0:f1} %}"
+                           Theme="{StaticResource CommonNumber}"
+                           FontStyle="Italic"/>
+                </StackPanel>
+              </Grid>
+
               <StackPanel Grid.Column="2"
                           Margin="4">
                 <TextBlock Text="Target SellPrice"/>

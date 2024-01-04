@@ -19,12 +19,10 @@
                 HorizontalAlignment="Left">
           <Button.Flyout>
             <MenuFlyout>
-              <MenuItem Header="Close and Save"
+              <MenuItem Header="Save and Close"
                         Command="{Binding CloseCommand}"/>
               <MenuItem Header="Save"
                         Command="{Binding SaveCommand}"/>
-              <MenuItem Header="Save as..."
-                        Command="{Binding SaveAsCommand}"/>
               <MenuItem Header="Edit..."
                         Command="{Binding EditCommand}"/>
               <MenuItem Header="Import..."
@@ -37,7 +35,7 @@
         
         <TextBlock Text="{Binding Name}"
                    HorizontalAlignment="Center"
-                   FontSize="22"/>
+                   Classes="h1"/>
       </Grid>
     </Border>
 
@@ -56,8 +54,16 @@
                      ScrollViewer.VerticalScrollBarVisibility="Visible">
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="vm:AssetViewModel">
-                  <Border>
-                    <TextBlock Text="{Binding Name}"/>
+                  <Border Background="Transparent"
+                          DoubleTapped="Border_DoubleTapped">
+                    <Grid ColumnDefinitions="*,*">
+                      <TextBlock Grid.Column="0"
+                          Text="{Binding Name}"
+                                 HorizontalAlignment="Left"/>
+                      <TextBlock Grid.Column="1"
+                                 Text="{Binding Status, Converter={StaticResource EnumDescriptionConverter}}"
+                                 HorizontalAlignment="Right"/>
+                    </Grid>
                   </Border>
                 </DataTemplate>
               </ListBox.ItemTemplate>

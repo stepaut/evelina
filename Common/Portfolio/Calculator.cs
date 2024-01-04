@@ -25,6 +25,7 @@
             foreach (var asset in _assets)
             {
                 CalcShare(asset);
+                CalcStatus(asset);
             }
         }
 
@@ -48,23 +49,67 @@
 
         private void CalcVolume(IAsset asset)
         {
-            double res = 0;
+            double volume = 0;
+            double buyedVolume = 0;
+
             foreach (var tr in asset.GetTransactions())
             {
                 double val = tr.Price * tr.Amount;
                 if (tr.Type == ETransaction.Sell)
                 {
-                    val *= -1;
+                    volume -= val;
                 }
-
-                res += val;
+                else
+                {
+                    volume += val;
+                    buyedVolume += val;
+                }
             }
-            asset.Volume = res;
+
+            asset.Volume = volume;
+            asset.BuyedVolume = buyedVolume;
         }
-        
+
         private void CalcShare(IAsset asset)
         {
             asset.Share = asset.Volume / _portfolio.Volume * 100;
+
+            double? targetPortolioVolume = (asset.TargetVolume / asset.TargetShare) * 100;
+
+            if (targetPortolioVolume.HasValue)
+            {
+                asset.BuyedShare = asset.BuyedVolume / targetPortolioVolume.Value * 100;
+            }
+        }
+
+        private void CalcStatus(IAsset asset)
+        {
+            if (asset.BuyedVolume == 0)
+            {
+                asset.Status = EAssetStatus.Waiting;
+                return;
+            }
+
+            asset.Status = EAssetStatus.Buyed;
+
+            if (asset.Volume <= IPortfolio.POSSIBLE_DELTA)
+            {
+                asset.Status = EAssetStatus.Free;
+                return;
+            }
+
+            if (!asset.TargetVolume.HasValue)
+            {
+                return;
+            }
+
+
+            if (Math.Abs(asset.BuyedVolume - asset.TargetVolume.Value) >= IPortfolio.POSSIBLE_DELTA)
+            {
+                return;
+            }
+
+            asset.Status = EAssetStatus.Buyed_fully;
         }
     }
 }

@@ -11,6 +11,9 @@ namespace Db
         public double Volume { get; set; }
         public double SellPrice { get; set; }
         public double Share { get; set; }
+        public double BuyedVolume { get; set; }
+        public double BuyedShare { get; set; }
+        public EAssetStatus Status { get; set; }
 
         private List<Transaction> _transactions;
         private Portfolio _parent;
