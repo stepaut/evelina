@@ -87,12 +87,18 @@ namespace evelina.ViewModels
             if (_asset is null)
             {
                 IAsset asset = _portfolioVM.Model.CreateAsset(Name);
+                asset.TargetVolume = TargetVolume;
+                asset.TargetSellPrice = TargetSellPrice;
+                asset.TargetShare = TargetShare;
 
                 _portfolioVM.AddAsset(asset);
             }
             else
             {
                 _asset.Name = Name;
+                _asset.TargetVolume = TargetVolume;
+                _asset.TargetSellPrice = TargetSellPrice;
+                _asset.TargetShare = TargetShare;
             }
 
             Close();

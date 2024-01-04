@@ -20,6 +20,30 @@ namespace evelina.ViewModels
 
 
         public string Name => Model?.Name;
+        public double? TargetVolume => Model?.TargetVolume;
+        public double? TargetSellPrice => Model?.TargetSellPrice;
+        public double? TargetShare => Model?.TargetShare;
+
+        private double? _Volume;
+        public double? Volume
+        {
+            get => _Volume;
+            set => this.RaiseAndSetIfChanged(ref _Volume, value);
+        }
+
+        private double? _SellPrice;
+        public double? SellPrice
+        {
+            get => _SellPrice;
+            set => this.RaiseAndSetIfChanged(ref _SellPrice, value);
+        }
+
+        private double? _Share;
+        public double? Share
+        {
+            get => _Share;
+            set => this.RaiseAndSetIfChanged(ref _Share, value);
+        }
 
         public ObservableCollection<TransactionViewModel> Transactions { get; } = new();
 
@@ -39,6 +63,8 @@ namespace evelina.ViewModels
             CreateTransactionCommand = ReactiveCommand.Create(CreateTransaction);
             EditCommand = ReactiveCommand.Create(Edit);
             DeleteCommand = ReactiveCommand.Create(Delete);
+
+            UpdateValues();
         }
 
 
@@ -72,7 +98,7 @@ namespace evelina.ViewModels
         private async void DeleteTransaction(TransactionViewModel vm)
         {
             var box = MessageBoxManager.GetMessageBoxStandard(
-                "Deleting", 
+                "Deleting",
                 $"Are you sure to delete {vm.DisplayName}",
                 ButtonEnum.YesNo);
 
@@ -105,6 +131,22 @@ namespace evelina.ViewModels
         private void Delete()
         {
             DeleteMeEvent?.Invoke(this);
+        }
+
+        private void UpdateValues()
+        {
+            double volume = 0;
+            foreach (var tr in Transactions)
+            {
+                double val = tr.Model.Price * tr.Model.Amount;
+                if (tr.Model.Type == ETransaction.Sell)
+                {
+                    val *= -1;
+                }
+
+                volume += val;
+            }
+            Volume = volume;
         }
     }
 }

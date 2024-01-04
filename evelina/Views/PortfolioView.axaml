@@ -19,7 +19,8 @@
               Command="{Binding CloseCommand}"
                 HorizontalAlignment="Left"/>
         <TextBlock Text="{Binding Name}"
-                   HorizontalAlignment="Center"/>
+                   HorizontalAlignment="Center"
+                   FontSize="22"/>
         <Button Content="Edit"
                 Command="{Binding EditCommand}"
                 HorizontalAlignment="Right"/>

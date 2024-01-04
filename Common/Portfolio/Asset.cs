@@ -24,6 +24,9 @@ namespace Db
             AssetDTO dto = new AssetDTO()
             {
                 Name = Name,
+                TargetVolume = TargetVolume,
+                TargetSellPrice = TargetSellPrice,
+                TargetShare = TargetShare,
             };
 
             return JsonSerializer.Serialize(dto);
@@ -34,6 +37,9 @@ namespace Db
             AssetDTO dto = JsonSerializer.Deserialize<AssetDTO>(json);
 
             Name = dto.Name;
+            TargetVolume = dto.TargetVolume;
+            TargetSellPrice = dto.TargetSellPrice;
+            TargetShare = dto.TargetShare;
         }
 
         public IList<ITransaction> GetTransactions()
