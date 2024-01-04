@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Book\Book.csproj" />
+    <ProjectReference Include="..\Common\evelina.Styles\evelina.Styles.csproj" />
     <ProjectReference Include="..\Common\Portfolio\Portfolio.csproj" />
     <ProjectReference Include="..\Common\VisualTools\VisualTools.csproj" />
   </ItemGroup>

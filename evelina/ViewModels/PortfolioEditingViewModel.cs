@@ -25,17 +25,6 @@ namespace evelina.ViewModels
             set => this.RaiseAndSetIfChanged(ref _description, value);
         }
 
-        //public string Description
-        //{
-        //    get => Model.Description;
-        //    set
-        //    {
-        //        Model.ChangeDescription(value);
-        //        this.RaisePropertyChanged(nameof(Description));
-        //    }
-        //}
-
-
         internal IPortfolio Model { get; private set; }
 
 

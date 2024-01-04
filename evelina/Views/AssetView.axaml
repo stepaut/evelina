@@ -36,32 +36,32 @@
               <StackPanel Grid.Column="0"
                           Margin="4">
                 <TextBlock Text="Target Volume"/>
-                <TextBlock Text="{Binding TargetVolume}"
-                           FontSize="18"/>
+                <TextBlock Text="{Binding TargetVolume, StringFormat={}{0:f2}}"
+                           Theme="{StaticResource CommonNumber}"/>
                 <TextBlock Text="Volume"/>
-                <TextBlock Text="{Binding Volume}"
-                           FontSize="18"
+                <TextBlock Text="{Binding Volume, StringFormat={}{0:f2}}"
+                           Theme="{StaticResource CommonNumber}"
                            FontWeight="Bold"/>
               </StackPanel>
               
               <StackPanel Grid.Column="1"
                           Margin="4">
                 <TextBlock Text="Target Share"/>
-                <TextBlock Text="{Binding TargetShare}"
-                           FontSize="18"/>
+                <TextBlock Text="{Binding TargetShare, StringFormat={}{0:f2} %}"
+                           Theme="{StaticResource CommonNumber}"/>
                 <TextBlock Text="Share"/>
-                <TextBlock Text="{Binding Share}"
-                           FontSize="18"
+                <TextBlock Text="{Binding Share, StringFormat={}{0:f2} %}"
+                           Theme="{StaticResource CommonNumber}"
                            FontWeight="Bold"/>
               </StackPanel>
               
               <StackPanel Grid.Column="2"
                           Margin="4">
                 <TextBlock Text="Target SellPrice"/>
-                <TextBlock Text="{Binding TargetSellPrice}"
+                <TextBlock Text="{Binding TargetSellPrice, StringFormat={}{0:f2}}"
                            FontSize="18"/>
                 <TextBlock Text="Sell Price"/>
-                <TextBlock Text="{Binding SellPrice}"
+                <TextBlock Text="{Binding SellPrice, StringFormat={}{0:f2}}"
                            FontSize="18"
                            FontWeight="Bold"/>
               </StackPanel>

@@ -1,0 +1,15 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <TextBlock Text="12,3"
+                 Theme="{StaticResource CommonNumber}"/>
+    </Border>
+  </Design.PreviewWith>
+
+  <Styles.Resources>
+      <ControlTheme x:Key="CommonNumber" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+      </ControlTheme>
+  </Styles.Resources>
+</Styles>
