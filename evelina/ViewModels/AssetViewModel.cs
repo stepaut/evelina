@@ -23,30 +23,11 @@ namespace evelina.ViewModels
         public double? TargetVolume => Model?.TargetVolume;
         public double? TargetSellPrice => Model?.TargetSellPrice;
         public double? TargetShare => Model?.TargetShare;
-
-        private double? _Volume;
-        public double? Volume
-        {
-            get => _Volume;
-            set => this.RaiseAndSetIfChanged(ref _Volume, value);
-        }
-
-        private double? _SellPrice;
-        public double? SellPrice
-        {
-            get => _SellPrice;
-            set => this.RaiseAndSetIfChanged(ref _SellPrice, value);
-        }
-
-        private double? _Share;
-        public double? Share
-        {
-            get => _Share;
-            set => this.RaiseAndSetIfChanged(ref _Share, value);
-        }
+        public double? Volume => Model?.Volume;
+        public double? SellPrice => Model?.SellPrice;
+        public double? Share => Model?.Share;
 
         public ObservableCollection<TransactionViewModel> Transactions { get; } = new();
-
 
         internal IAsset Model { get; private set; }
 
@@ -63,8 +44,6 @@ namespace evelina.ViewModels
             CreateTransactionCommand = ReactiveCommand.Create(CreateTransaction);
             EditCommand = ReactiveCommand.Create(Edit);
             DeleteCommand = ReactiveCommand.Create(Delete);
-
-            UpdateValues();
         }
 
 
@@ -131,22 +110,6 @@ namespace evelina.ViewModels
         private void Delete()
         {
             DeleteMeEvent?.Invoke(this);
-        }
-
-        private void UpdateValues()
-        {
-            double volume = 0;
-            foreach (var tr in Transactions)
-            {
-                double val = tr.Model.Price * tr.Model.Amount;
-                if (tr.Model.Type == ETransaction.Sell)
-                {
-                    val *= -1;
-                }
-
-                volume += val;
-            }
-            Volume = volume;
         }
     }
 }

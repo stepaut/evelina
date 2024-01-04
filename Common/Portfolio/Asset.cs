@@ -8,14 +8,19 @@ namespace Db
         public double? TargetVolume { get; set; }
         public double? TargetSellPrice { get; set; }
         public double? TargetShare { get; set; }
+        public double Volume { get; set; }
+        public double SellPrice { get; set; }
+        public double Share { get; set; }
 
         private List<Transaction> _transactions;
+        private Portfolio _parent;
 
 
-        internal Asset(string id, long creationDate, string parentId) : base(id, creationDate, parentId)
+        internal Asset(string id, long creationDate, string parentId, Portfolio parent) : base(id, creationDate, parentId)
         {
             Level = EItemLevel.Asset;
             _transactions = new List<Transaction>();
+            _parent = parent;
         }
 
 
@@ -57,13 +62,15 @@ namespace Db
             var now = DateTime.Now.Ticks;
             string uid = Guid.NewGuid().ToString();
 
-            Transaction transaction = new Transaction(uid, now, Id);
+            Transaction transaction = new Transaction(uid, now, Id, this);
             transaction.Datetime = datetime;
             transaction.Type = type;
             transaction.Price = price;
             transaction.Amount = amount;
 
             _transactions.Add(transaction);
+            _parent.UpdateStat();
+
             return transaction;
         }
 
@@ -77,8 +84,10 @@ namespace Db
             }
 
             _transactions.Remove(real);
+            _parent.UpdateStat();
         }
 
+        #region internal
         internal void AddTransaction(Transaction transaction)
         {
             if (transaction.ParentId != Id)
@@ -87,6 +96,13 @@ namespace Db
             }
 
             _transactions.Add(transaction);
+            _parent.UpdateStat();
         }
+
+        internal void UpdateStat()
+        {
+            _parent.UpdateStat();
+        }
+        #endregion
     }
 }

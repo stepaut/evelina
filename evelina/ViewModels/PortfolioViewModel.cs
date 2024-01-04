@@ -17,6 +17,7 @@ namespace evelina.ViewModels
 
 
         public string Name => Model?.Name;
+        public double? Volume => Model?.Volume;
 
         private AssetViewModel _selectedAsset = null;
         public AssetViewModel SelectedAsset
@@ -34,6 +35,7 @@ namespace evelina.ViewModels
         public PortfolioViewModel(IPortfolio model, MainViewModel main) : base(main)
         {
             Model = model;
+            Model.UpdateVisualStatEvent += Model_UpdateVisualStatEvent;
 
             foreach (IAsset existed in model.GetAssets())
             {
@@ -57,7 +59,21 @@ namespace evelina.ViewModels
             Assets.Clear();
 
             SelectedAsset = null;
+
+            Model.UpdateVisualStatEvent -= Model_UpdateVisualStatEvent;
             Model = null;
+        }
+
+        private void Model_UpdateVisualStatEvent()
+        {
+            OnPropertyChanged(nameof(Volume));
+
+            foreach (AssetViewModel assetVM in Assets)
+            {
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.Volume));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.SellPrice));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.Share));
+            }
         }
 
         private void Close()

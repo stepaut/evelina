@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book", "Common\Book\Book.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio", "Common\Portfolio\Portfolio.csproj", "{4F6EFAA5-9281-437C-BF0B-7100D567C3F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualTools", "Common\VisualTools\VisualTools.csproj", "{CD0F7141-D95C-4EE3-A2FF-148CC847FD84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualTools", "Common\VisualTools\VisualTools.csproj", "{CD0F7141-D95C-4EE3-A2FF-148CC847FD84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

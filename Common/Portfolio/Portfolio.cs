@@ -1,17 +1,22 @@
 ﻿using System.Text.Json;
+using Avalonia.Threading;
 
 namespace Db
 {
     internal class Portfolio : Item, IPortfolio
     {
+        public event UpdateVisualStat UpdateVisualStatEvent;
+
         public string Name { get; set; }
 
         public string Description { get; set; }
+        public double Volume { get; set; }
 
         internal string Path { get; private set; }
 
 
         private List<Asset> _assets;
+        private DispatcherTimer _updateStat;
 
 
         private Portfolio(string id, long creationDate, string path = null) : base(id, creationDate, "")
@@ -19,6 +24,9 @@ namespace Db
             Path = path;
             Level = EItemLevel.Portfolio;
             _assets = new List<Asset>();
+
+            _updateStat = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
+            _updateStat.Tick += _updateStat_Tick;
         }
 
 
@@ -37,10 +45,11 @@ namespace Db
             var now = DateTime.Now.Ticks;
             string uid = Guid.NewGuid().ToString();
 
-            Asset asset = new Asset(uid, now, Id);
+            Asset asset = new Asset(uid, now, Id, this);
             asset.Name = assetName;
 
             _assets.Add(asset);
+            UpdateStat();
 
             return asset;
         }
@@ -54,6 +63,7 @@ namespace Db
             }
 
             _assets.Remove(real);
+            this.UpdateStat();
         }
 
         public override string ToJson()
@@ -85,10 +95,26 @@ namespace Db
             Description = dto.Description;
         }
 
+        public IList<IAsset> GetAssets()
+        {
+            IList<IAsset> assets = new List<IAsset>();
+            foreach (IAsset asset in _assets)
+            {
+                assets.Add(asset);
+            }
+            return assets;
+        }
+
         #region internal
-        public void AddAsset(Asset asset)
+        internal void AddAsset(Asset asset)
         {
             _assets.Add(asset);
+            this.UpdateStat();
+        }
+
+        internal void UpdateStat()
+        {
+            _updateStat.Start();
         }
         #endregion
 
@@ -157,6 +183,18 @@ namespace Db
             }
 
             return true;
+        }
+
+        private void _updateStat_Tick(object sender, EventArgs e)
+        {
+            _updateStat.Stop();
+
+            using (var calculator = new Calculator(this))
+            {
+                calculator.UpdateStat();
+            }
+
+            UpdateVisualStatEvent?.Invoke();
         }
         #endregion
 
@@ -231,7 +269,7 @@ namespace Db
 
             foreach (Thing thing in assetThings)
             {
-                Asset asset = new Asset(thing.Id, thing.CreationDate, thing.ParentId);
+                Asset asset = new Asset(thing.Id, thing.CreationDate, thing.ParentId, portfolio);
                 asset.FromJson(thing.JsonValue);
                 portfolio.AddAsset(asset);
             }
@@ -240,9 +278,6 @@ namespace Db
 
             foreach (Thing thing in trThings)
             {
-                Transaction transaction = new Transaction(thing.Id, thing.CreationDate, thing.ParentId);
-                transaction.FromJson(thing.JsonValue);
-
                 Asset parent = assets.FirstOrDefault(x => x.Id == thing.ParentId) as Asset;
 
                 if (parent is null)
@@ -250,20 +285,13 @@ namespace Db
                     throw new Exception();//TODO
                 }
 
+                Transaction transaction = new Transaction(thing.Id, thing.CreationDate, thing.ParentId, parent);
+                transaction.FromJson(thing.JsonValue);
+
                 parent.AddTransaction(transaction);
             }
 
             return portfolio;
-        }
-
-        public IList<IAsset> GetAssets()
-        {
-            IList<IAsset> assets = new List<IAsset>();
-            foreach (IAsset asset in _assets)
-            {
-                assets.Add(asset);
-            }
-            return assets;
         }
         #endregion
     }

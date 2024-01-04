@@ -6,18 +6,48 @@ namespace Db
     {
         public long Datetime { get; set; }
 
-        public ETransaction Type { get; set; }
+        private ETransaction _type;
+        public ETransaction Type
+        {
+            get => _type;
+            set
+            {
+                _type = value;
+                _parent.UpdateStat();
+            }
+        }
 
-        public double Price { get; set; }
+        private double _price;
+        public double Price
+        {
+            get => _price;
+            set
+            {
+                _price = value;
+                _parent.UpdateStat();
+            }
+        }
 
-        public double Amount { get; set; }
+        private double _amount;
+        public double Amount
+        {
+            get => _amount;
+            set
+            {
+                _amount = value;
+                _parent.UpdateStat();
+            }
+        }
 
         public string Note { get; set; }
 
+        private Asset _parent;
 
-        public Transaction(string id, long creationDate, string parentId) : base(id, creationDate, parentId)
+
+        public Transaction(string id, long creationDate, string parentId, Asset parent) : base(id, creationDate, parentId)
         {
             Level = EItemLevel.Transaction;
+            _parent = parent;
         }
 
 

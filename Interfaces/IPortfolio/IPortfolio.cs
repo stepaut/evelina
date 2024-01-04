@@ -1,7 +1,11 @@
 ﻿namespace Db
 {
+    public delegate void UpdateVisualStat();
+
     public interface IPortfolio : IItem
     {
+        event UpdateVisualStat UpdateVisualStatEvent;
+
         #region required
         string Name { get; set; }
         #endregion
@@ -10,6 +14,9 @@
         string Description { get; set; }
         #endregion
 
+        #region not_saveable
+        double Volume { get; set; }
+        #endregion
 
         IAsset CreateAsset(string assetName);
         IList<IAsset> GetAssets();
