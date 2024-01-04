@@ -1,4 +1,6 @@
 ﻿using Db;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -8,8 +10,13 @@ namespace evelina.ViewModels
 {
     public class AssetViewModel : WindowViewModelBase, IDisposable
     {
+        internal delegate void DeleteMe(AssetViewModel vm);
+        internal event DeleteMe DeleteMeEvent;
+
+
         public ICommand CreateTransactionCommand { get; }
         public ICommand EditCommand { get; }
+        public ICommand DeleteCommand { get; }
 
 
         public string Name => Model?.Name;
@@ -31,6 +38,7 @@ namespace evelina.ViewModels
 
             CreateTransactionCommand = ReactiveCommand.Create(CreateTransaction);
             EditCommand = ReactiveCommand.Create(Edit);
+            DeleteCommand = ReactiveCommand.Create(Delete);
         }
 
 
@@ -61,8 +69,20 @@ namespace evelina.ViewModels
             _main.ActiveVM = editorVM;
         }
 
-        private void DeleteTransaction(TransactionViewModel vm)
+        private async void DeleteTransaction(TransactionViewModel vm)
         {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Deleting", 
+                $"Are you sure to delete {vm.DisplayName}",
+                ButtonEnum.YesNo);
+
+            var res = await box.ShowAsync();
+
+            if (res != ButtonResult.Yes)
+            {
+                return;
+            }
+
             Model.DeleteTransaction(vm.Model);
 
             vm.EditMeEvent -= EditTransaction;
@@ -78,7 +98,13 @@ namespace evelina.ViewModels
 
         private void Edit()
         {
-            //TODO
+            AssetEditingViewModel editorVM = new AssetEditingViewModel(Model, _main);
+            _main.ActiveVM = editorVM;
+        }
+
+        private void Delete()
+        {
+            DeleteMeEvent?.Invoke(this);
         }
     }
 }

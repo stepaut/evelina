@@ -1,5 +1,6 @@
 ﻿using Db;
-using DialogHostAvalonia;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -50,6 +51,7 @@ namespace evelina.ViewModels
         {
             foreach (AssetViewModel vm in Assets)
             {
+                vm.DeleteMeEvent -= DeleteAsset;
                 vm.Dispose();
             }
             Assets.Clear();
@@ -70,27 +72,43 @@ namespace evelina.ViewModels
             _main.ActiveVM = editorVM;
         }
 
-        private void AddAsset(IAsset asset)
+        internal void AddAsset(IAsset asset)
         {
             AssetViewModel vm = new AssetViewModel(asset, _main);
+            vm.DeleteMeEvent += DeleteAsset;
 
             Assets.Add(vm);
         }
 
-        private async void CreateAsset()
+        private void CreateAsset()
         {
-            var dialog = new InputDialogViewModel("Input name", "Input name of asset");
-            await DialogHost.Show(dialog);
+            AssetEditingViewModel editorVM = new AssetEditingViewModel(this, _main);
+            _main.ActiveVM = editorVM;
 
-            string name = dialog.Input;
+            //var dialog = new InputDialogViewModel("Input name", "Input name of asset");
+            //await DialogHost.Show(dialog);
 
-            if (string.IsNullOrEmpty(name))
+            //string name = dialog.Input;
+        }
+
+        private async void DeleteAsset(AssetViewModel vm)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Deleting",
+                $"Are you sure to delete {vm.Name}",
+                ButtonEnum.YesNo);
+
+            var res = await box.ShowAsync();
+
+            if (res != ButtonResult.Yes)
             {
                 return;
             }
 
-            IAsset asset = Model.CreateAsset(name);
-            AddAsset(asset);
+            Model.DeleteAsset(vm.Model);
+
+            vm.DeleteMeEvent -= DeleteAsset;
+            Assets.Remove(vm);
         }
     }
 }

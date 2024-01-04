@@ -45,6 +45,17 @@ namespace Db
             return asset;
         }
 
+        public void DeleteAsset(IAsset asset)
+        {
+            Asset real = asset as Asset;
+            if (!_assets.Contains(real))
+            {
+                throw new InvalidOperationException();
+            }
+
+            _assets.Remove(real);
+        }
+
         public override string ToJson()
         {
             PortfolioDTO dto = new PortfolioDTO()

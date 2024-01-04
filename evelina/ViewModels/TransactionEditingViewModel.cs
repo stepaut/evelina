@@ -106,8 +106,8 @@ namespace evelina.ViewModels
 
             if (_transaction is null)
             {
-                // create new transaction
-                ITransaction transaction = _assetVM.Model.CreateTransaction(Datetime.Ticks, Type, Price.Value, Amount.Value, Note);
+                ITransaction transaction = _assetVM.Model.CreateTransaction(Datetime.Ticks, Type, Price.Value, Amount.Value);
+                transaction.Note = Note;
                 _assetVM.AddTransaction(transaction);
             }
             else

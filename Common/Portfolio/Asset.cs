@@ -5,7 +5,9 @@ namespace Db
     internal class Asset : Item, IAsset
     {
         public string Name { get; set; }
-
+        public double? TargetVolume { get; set; }
+        public double? TargetSellPrice { get; set; }
+        public double? TargetShare { get; set; }
 
         private List<Transaction> _transactions;
 
@@ -44,7 +46,7 @@ namespace Db
             return transactions;
         }
 
-        public ITransaction CreateTransaction(long datetime, ETransaction type, double price, double amount, string note = null)
+        public ITransaction CreateTransaction(long datetime, ETransaction type, double price, double amount)
         {
             var now = DateTime.Now.Ticks;
             string uid = Guid.NewGuid().ToString();
@@ -54,12 +56,11 @@ namespace Db
             transaction.Type = type;
             transaction.Price = price;
             transaction.Amount = amount;
-            transaction.Note = note;
 
             _transactions.Add(transaction);
             return transaction;
         }
-    
+
         public void DeleteTransaction(ITransaction transaction)
         {
             Transaction real = transaction as Transaction;

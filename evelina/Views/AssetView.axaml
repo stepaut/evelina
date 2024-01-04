@@ -9,14 +9,20 @@
   <Grid RowDefinitions="auto,*">
     <Border Grid.Row="0"
             HorizontalAlignment="Stretch"
-            BorderThickness="1"
+            BorderThickness="0,0,0,1"
             BorderBrush="Gray">
       <Grid Margin="4">
         <TextBlock Text="{Binding Name}"
                    HorizontalAlignment="Center"/>
-        <Button Content="Edit"
-                Command="{Binding EditCommand}"
-                HorizontalAlignment="Right"/>
+        <Grid HorizontalAlignment="Right"
+              ColumnDefinitions="*,*">
+          <Button Grid.Column="0"
+                Content="Edit"
+                Command="{Binding EditCommand}"/>
+          <Button Grid.Column="1"
+                Content="Delete"
+                Command="{Binding DeleteCommand}"/>
+        </Grid>
       </Grid>
     </Border>
 
@@ -25,7 +31,7 @@
 
 
         <Border Grid.Column="1"
-                BorderThickness="1"
+                BorderThickness="1,0,0,0"
                 BorderBrush="Gray">
           <Grid RowDefinitions="*,auto">
             <ListBox Grid.Row="0"
