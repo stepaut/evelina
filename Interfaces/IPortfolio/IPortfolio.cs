@@ -21,6 +21,7 @@
         IAsset CreateAsset(string assetName);
         IList<IAsset> GetAssets();
         void DeleteAsset(IAsset asset);
+        IAsset GetAsset(string assetName);
 
         Task<bool> Save();
         Task<bool> SaveAs(string path);

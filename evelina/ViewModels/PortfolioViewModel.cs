@@ -1,4 +1,8 @@
-﻿using Db;
+﻿using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using CTS.Import;
+using Db;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
@@ -6,6 +10,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Avalonia;
+using VisualTools;
 
 namespace evelina.ViewModels
 {
@@ -14,6 +20,10 @@ namespace evelina.ViewModels
         public ICommand CloseCommand { get; }
         public ICommand EditCommand { get; }
         public ICommand CreateAssetCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand SaveAsCommand { get; }
+        public ICommand ImportCommand { get; }
+        public ICommand ExportCommand { get; }
 
 
         public string Name => Model?.Name;
@@ -46,6 +56,7 @@ namespace evelina.ViewModels
             CloseCommand = ReactiveCommand.Create(Close);
             EditCommand = ReactiveCommand.Create(EditPortfoliInfo);
             CreateAssetCommand = ReactiveCommand.Create(CreateAsset);
+            ImportCommand = ReactiveCommand.Create(Import);
         }
 
 
@@ -90,6 +101,11 @@ namespace evelina.ViewModels
 
         internal void AddAsset(IAsset asset)
         {
+            if (Assets.Any(x => x.Model == asset))
+            {
+                return;
+            }
+
             AssetViewModel vm = new AssetViewModel(asset, _main);
             vm.DeleteMeEvent += DeleteAsset;
 
@@ -125,6 +141,45 @@ namespace evelina.ViewModels
 
             vm.DeleteMeEvent -= DeleteAsset;
             Assets.Remove(vm);
+        }
+
+        private async void Import()
+        {
+            var mainWindow = Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop ? desktop.MainWindow : null;
+
+            TopLevel topLevel = TopLevel.GetTopLevel(mainWindow);
+
+            var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Select CSV file with CTS",
+                AllowMultiple = false,
+                FileTypeFilter = new FilePickerFileType[] { Constants.CSVFileType },
+            }); ;
+
+            if (files.Count == 0)
+            {
+                return;
+            }
+
+            try
+            {
+                using (CTSImporter importer = new CTSImporter(files[0].Path.AbsolutePath))
+                {
+                    importer.Read();
+                    importer.AddToPortfolio(Model);
+                }
+            }
+            catch (Exception ex)
+            {
+                //TODO
+                return;
+            }
+
+            foreach (IAsset existed in Model.GetAssets())
+            {
+                AddAsset(existed);
+            }
+            SelectedAsset ??= Assets.FirstOrDefault();
         }
     }
 }

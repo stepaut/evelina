@@ -105,6 +105,11 @@ namespace Db
             return assets;
         }
 
+        public IAsset GetAsset(string assetName)
+        {
+            return _assets.FirstOrDefault(x => x.Name == assetName);
+        }
+
         #region internal
         internal void AddAsset(Asset asset)
         {

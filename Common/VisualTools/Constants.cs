@@ -10,5 +10,9 @@ namespace VisualTools
         {
             Patterns = new[] { $"*.{DB_EXTENSION}" },
         };
+        public static FilePickerFileType CSVFileType { get; } = new("csv")
+        {
+            Patterns = new[] { $"*.csv" },
+        };
     }
 }
