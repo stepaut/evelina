@@ -5,9 +5,49 @@ namespace Db
     internal class Asset : Item, IAsset
     {
         public string Name { get; set; }
-        public double? TargetVolume { get; set; }
-        public double? TargetSellPrice { get; set; }
-        public double? TargetShare { get; set; }
+
+        private double? _targetVolume;
+        public double? TargetVolume
+        {
+            get => _targetVolume;
+            set
+            {
+                if (_targetVolume != value)
+                {
+                    _targetVolume = value;
+                    _parent.UpdateStat();
+                }
+            }
+        }
+
+        private double? _targetSellPrice;
+        public double? TargetSellPrice
+        {
+            get => _targetSellPrice;
+            set
+            {
+                if (_targetSellPrice != value)
+                {
+                    _targetSellPrice = value;
+                    _parent.UpdateStat();
+                }
+            }
+        }
+
+        private double? _targetShare;
+        public double? TargetShare
+        {
+            get => _targetShare;
+            set
+            {
+                if (_targetShare != value)
+                {
+                    _targetShare = value;
+                    _parent.UpdateStat();
+                }
+            }
+        }
+
         public IAssetStat Stat => _stat;
 
         private List<Transaction> _transactions;

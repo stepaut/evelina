@@ -83,12 +83,16 @@ namespace evelina.ViewModels
 
             foreach (AssetViewModel assetVM in Assets)
             {
+                //TODO how rework? attrs?
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.Volume));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.SellPrice));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.Share));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.BuyedVolume));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.BuyedShare));
                 assetVM.OnPropertyChanged(nameof(AssetViewModel.Status));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.TargetVolume));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.TargetSellPrice));
+                assetVM.OnPropertyChanged(nameof(AssetViewModel.TargetShare));
             }
         }
 
