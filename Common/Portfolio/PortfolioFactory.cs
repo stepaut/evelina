@@ -134,19 +134,25 @@
                     Thing thisThing = new Thing(portfolio);
                     newThings[thisThing.Id] = thisThing;
 
-                    foreach (Asset asset in portfolio.GetAssets())
+                    foreach (IAsset asset in portfolio.GetAssets())
                     {
                         Thing thing = new Thing(asset);
                         newThings[thing.Id] = thing;
 
-                        foreach (Transaction transaction in asset.GetTransactions())
+                        foreach (ITransaction transaction in asset.GetTransactions())
                         {
                             Thing thingTr = new Thing(transaction);
                             newThings[thingTr.Id] = thingTr;
                         }
+
+                        foreach (ITarget target in asset.GetTargets())
+                        {
+                            Thing thingTr = new Thing(target);
+                            newThings[thingTr.Id] = thingTr;
+                        }
                     }
 
-                    foreach (var newThing in newThings.Values)
+                    foreach (Thing newThing in newThings.Values)
                     {
                         if (oldThings.TryGetValue(newThing.Id, out var old))
                         {
@@ -159,7 +165,7 @@
                         }
                     }
 
-                    foreach (var oldThing in oldThings.Values)
+                    foreach (Thing oldThing in oldThings.Values)
                     {
                         if (!newThings.TryGetValue(oldThing.Id, out _))
                         {

@@ -61,6 +61,7 @@ namespace Db
         {
             Level = EItemLevel.Asset;
             _transactions = new List<Transaction>();
+            _targets = new List<Target>();
             _parent = parent;
             _stat = new AssetStat();
         }
