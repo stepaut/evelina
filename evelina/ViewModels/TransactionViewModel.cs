@@ -21,6 +21,8 @@ namespace evelina.ViewModels
 
         public string DisplayDesctiption => $"{(Model != null ? new DateTime(Model.Datetime) : 0)}";
 
+        internal long? Datetime => Model?.Datetime;
+
 
         internal ITransaction Model { get; private set; }
 

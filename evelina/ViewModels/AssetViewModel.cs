@@ -5,6 +5,7 @@ using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Linq;
 
 namespace evelina.ViewModels
 {
@@ -12,6 +13,9 @@ namespace evelina.ViewModels
     {
         internal delegate void DeleteMe(AssetViewModel vm);
         internal event DeleteMe DeleteMeEvent;
+
+        internal delegate void EditMe(AssetViewModel vm);
+        internal event EditMe EditMeEvent;
 
 
         public ICommand CreateTransactionCommand { get; }
@@ -53,7 +57,7 @@ namespace evelina.ViewModels
         public EAssetStatus? Status => Model?.Stat.Status;
         public bool? IsFree => Status is EAssetStatus.Free;
 
-        public ObservableCollection<TransactionViewModel> Transactions { get; } = new();
+        public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
         internal IAsset Model { get; private set; }
 
@@ -61,11 +65,13 @@ namespace evelina.ViewModels
         public AssetViewModel(IAsset model, MainViewModel main) : base(main)
         {
             Model = model;
+            Transactions = new();
 
             foreach (ITransaction transaction in model.GetTransactions())
             {
                 AddTransaction(transaction);
             }
+            RefreshTransactions();
 
             CreateTransactionCommand = ReactiveCommand.Create(CreateTransaction);
             EditCommand = ReactiveCommand.Create(Edit);
@@ -96,7 +102,7 @@ namespace evelina.ViewModels
 
         private void EditTransaction(TransactionViewModel vm)
         {
-            TransactionEditingViewModel editorVM = new TransactionEditingViewModel(vm.Model, _main);
+            TransactionEditingViewModel editorVM = new TransactionEditingViewModel(vm.Model, this, _main);
             _main.ActiveVM = editorVM;
         }
 
@@ -129,13 +135,17 @@ namespace evelina.ViewModels
 
         private void Edit()
         {
-            AssetEditingViewModel editorVM = new AssetEditingViewModel(Model, _main);
-            _main.ActiveVM = editorVM;
+            EditMeEvent?.Invoke(this);
         }
 
         private void Delete()
         {
             DeleteMeEvent?.Invoke(this);
+        }
+
+        internal void RefreshTransactions()
+        {
+            Transactions = new ObservableCollection<TransactionViewModel>(Transactions.OrderByDescending(x => x.Datetime));
         }
     }
 }

@@ -44,10 +44,10 @@ namespace evelina.ViewModels
         private IAsset _asset;
 
 
-        public AssetEditingViewModel(IAsset asset, MainViewModel main) : this(main)
+        public AssetEditingViewModel(PortfolioViewModel vm, IAsset asset, MainViewModel main) : this(main)
         {
             _asset = asset;
-            _portfolioVM = null;
+            _portfolioVM = vm;
 
             Name = asset.Name;
             TargetVolume = asset.TargetVolume;
@@ -92,7 +92,6 @@ namespace evelina.ViewModels
                 asset.TargetShare = TargetShare;
 
                 _portfolioVM.AddAsset(asset);
-                _portfolioVM.RefreshAssets();
             }
             else
             {
@@ -101,6 +100,8 @@ namespace evelina.ViewModels
                 _asset.TargetSellPrice = TargetSellPrice;
                 _asset.TargetShare = TargetShare;
             }
+
+            _portfolioVM.RefreshAssets();
 
             Close();
         }

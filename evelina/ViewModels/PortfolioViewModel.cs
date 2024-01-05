@@ -67,6 +67,7 @@ namespace evelina.ViewModels
             foreach (AssetViewModel vm in Assets)
             {
                 vm.DeleteMeEvent -= DeleteAsset;
+                vm.EditMeEvent -= EditAsset;
                 vm.Dispose();
             }
             Assets.Clear();
@@ -122,8 +123,15 @@ namespace evelina.ViewModels
 
             AssetViewModel vm = new AssetViewModel(asset, _main);
             vm.DeleteMeEvent += DeleteAsset;
+            vm.EditMeEvent += EditAsset;
 
             Assets.Add(vm);
+        }
+
+        private void EditAsset(AssetViewModel vm)
+        {
+            AssetEditingViewModel editorVM = new AssetEditingViewModel(this, vm.Model, _main);
+            _main.ActiveVM = editorVM;
         }
 
         private void CreateAsset()
@@ -154,6 +162,7 @@ namespace evelina.ViewModels
             Model.DeleteAsset(vm.Model);
 
             vm.DeleteMeEvent -= DeleteAsset;
+            vm.EditMeEvent -= EditAsset;
             Assets.Remove(vm);
         }
 

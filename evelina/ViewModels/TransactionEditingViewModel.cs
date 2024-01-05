@@ -69,9 +69,9 @@ namespace evelina.ViewModels
             Type = ETransaction.Buy;
         }
 
-        public TransactionEditingViewModel(ITransaction transaction, MainViewModel main) : this(main)
+        public TransactionEditingViewModel(ITransaction transaction, AssetViewModel assetVM, MainViewModel main) : this(main)
         {
-            _assetVM = null;
+            _assetVM = assetVM;
             _transaction = transaction;
 
             Datetime = new DateTimeOffset(new DateTime(transaction.Datetime));
@@ -118,6 +118,8 @@ namespace evelina.ViewModels
                 _transaction.Amount = Amount.Value;
                 _transaction.Note = Note;
             }
+
+            _assetVM.RefreshTransactions();
 
             Close();
         }
