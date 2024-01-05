@@ -15,9 +15,11 @@
         IAssetStat Stat { get; }
 
         IList<ITransaction> GetTransactions();
-
         ITransaction CreateTransaction(long datetime, ETransaction type, double price, double amount);
-
         void DeleteTransaction(ITransaction transaction);
+
+        IList<ITarget> GetTargets();
+        ITarget CreateTarget(double price, double volume);
+        void DeleteTarget(ITarget target);
     }
 }

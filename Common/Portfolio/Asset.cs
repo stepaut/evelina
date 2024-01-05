@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq;
+using System.Text.Json;
 
 namespace Db
 {
@@ -51,6 +52,7 @@ namespace Db
         public IAssetStat Stat => _stat;
 
         private List<Transaction> _transactions;
+        private List<Target> _targets;
         private Portfolio _parent;
         private AssetStat _stat;
 
@@ -64,6 +66,7 @@ namespace Db
         }
 
 
+        #region IItem
         public override string ToJson()
         {
             AssetDTO dto = new AssetDTO()
@@ -86,6 +89,7 @@ namespace Db
             TargetSellPrice = dto.TargetSellPrice;
             TargetShare = dto.TargetShare;
         }
+        #endregion
 
         public IList<ITransaction> GetTransactions()
         {
@@ -127,6 +131,45 @@ namespace Db
             _parent.UpdateStat();
         }
 
+        public IList<ITarget> GetTargets()
+        {
+            IList<ITarget> targets = new List<ITarget>();
+            foreach (ITarget target in _targets)
+            {
+                targets.Add(target);
+            }
+
+            return targets;
+        }
+
+        public ITarget CreateTarget(double price, double volume)
+        {
+            var now = DateTime.Now.Ticks;
+            string uid = Guid.NewGuid().ToString();
+
+            Target target = new Target(uid, now, Id);
+            target.Volume = volume;
+            target.Price = price;
+
+            _targets.Add(target);
+            _parent.UpdateStat();
+
+            return target;
+        }
+
+        public void DeleteTarget(ITarget target)
+        {
+            Target real = target as Target;
+
+            if (!_targets.Contains(real))
+            {
+                throw new InvalidOperationException();
+            }
+
+            _targets.Remove(real);
+            _parent.UpdateStat();
+        }
+
         #region internal
         internal void AddTransaction(Transaction transaction)
         {
@@ -136,6 +179,17 @@ namespace Db
             }
 
             _transactions.Add(transaction);
+            _parent.UpdateStat();
+        }
+
+        internal void AddTarget(Target target)
+        {
+            if (target.ParentId != Id)
+            {
+                throw new InvalidOperationException();
+            }
+
+            _targets.Add(target);
             _parent.UpdateStat();
         }
 

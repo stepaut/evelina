@@ -7,6 +7,7 @@ namespace Db
         Portfolio = 0,
         Asset = 1,
         Transaction = 2,
+        Target = 3,
     }
 
     public enum ETransaction
