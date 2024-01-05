@@ -23,6 +23,7 @@ namespace evelina.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand ImportCommand { get; }
         public ICommand ExportCommand { get; }
+        public ICommand ShowTableCommand { get; }
 
 
         public string Name => Model?.Name;
@@ -32,7 +33,15 @@ namespace evelina.ViewModels
         public AssetViewModel SelectedAsset
         {
             get => _selectedAsset;
-            set => this.RaiseAndSetIfChanged(ref _selectedAsset, value);
+            set
+            {
+                if (value is null)
+                {
+                    return;
+                }
+
+                this.RaiseAndSetIfChanged(ref _selectedAsset, value);
+            }
         }
 
         public ObservableCollection<AssetViewModel> Assets { get; private set; }
@@ -59,6 +68,7 @@ namespace evelina.ViewModels
             EditCommand = ReactiveCommand.Create(EditPortfoliInfo);
             CreateAssetCommand = ReactiveCommand.Create(CreateAsset);
             ImportCommand = ReactiveCommand.Create(Import);
+            ShowTableCommand = ReactiveCommand.Create(ShowTable);
         }
 
 
@@ -209,6 +219,12 @@ namespace evelina.ViewModels
         internal void RefreshAssets()
         {
             Assets = new ObservableCollection<AssetViewModel>(Assets.OrderBy(x => x.Name));
+        }
+
+        private void ShowTable()
+        {
+            AssetsTableViewModel vm = new AssetsTableViewModel(this, _main);
+            _main.ActiveVM = vm;
         }
     }
 }

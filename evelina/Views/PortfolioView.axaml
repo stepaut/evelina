@@ -14,27 +14,35 @@
             HorizontalAlignment="Stretch"
             BorderThickness="1"
             BorderBrush="Gray">
-      <Grid Margin="4">
-        <Button Content="Menu"
-                HorizontalAlignment="Left">
-          <Button.Flyout>
-            <MenuFlyout>
-              <MenuItem Header="Save and Close"
-                        Command="{Binding CloseCommand}"/>
-              <MenuItem Header="Save"
-                        Command="{Binding SaveCommand}"/>
-              <MenuItem Header="Edit..."
-                        Command="{Binding EditCommand}"/>
-              <MenuItem Header="Import..."
-                        Command="{Binding ImportCommand}"/>
-              <MenuItem Header="Export..."
-                        Command="{Binding ExportCommand}"/>
-            </MenuFlyout>
-          </Button.Flyout>
+      <Grid Margin="4"
+            ColumnDefinitions="auto,*">
+        <Grid Grid.Column="0"
+              ColumnDefinitions="*,*">
+          <Button Grid.Column="0"
+                  Content="Menu"
+                  HorizontalAlignment="Left">
+            <Button.Flyout>
+              <MenuFlyout>
+                <MenuItem Header="Save and Close"
+                          Command="{Binding CloseCommand}"/>
+                <MenuItem Header="Save"
+                          Command="{Binding SaveCommand}"/>
+                <MenuItem Header="Edit..."
+                          Command="{Binding EditCommand}"/>
+                <MenuItem Header="Import..."
+                          Command="{Binding ImportCommand}"/>
+                <MenuItem Header="Export..."
+                          Command="{Binding ExportCommand}"/>
+              </MenuFlyout>
+            </Button.Flyout>
           </Button>
-        
-        <TextBlock Text="{Binding Name}"
-                   HorizontalAlignment="Center"
+          <Button Grid.Column="1"
+                  Content="Table"
+                  Command="{Binding ShowTableCommand}"/>
+        </Grid>
+
+        <TextBlock Grid.Column="1"
+                    Text="{Binding Name}"
                    Classes="h1"/>
       </Grid>
     </Border>
