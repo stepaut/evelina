@@ -8,15 +8,11 @@ namespace Db
         public double? TargetVolume { get; set; }
         public double? TargetSellPrice { get; set; }
         public double? TargetShare { get; set; }
-        public double Volume { get; set; }
-        public double SellPrice { get; set; }
-        public double Share { get; set; }
-        public double BuyedVolume { get; set; }
-        public double BuyedShare { get; set; }
-        public EAssetStatus Status { get; set; }
+        public IAssetStat Stat => _stat;
 
         private List<Transaction> _transactions;
         private Portfolio _parent;
+        private AssetStat _stat;
 
 
         internal Asset(string id, long creationDate, string parentId, Portfolio parent) : base(id, creationDate, parentId)
@@ -24,6 +20,7 @@ namespace Db
             Level = EItemLevel.Asset;
             _transactions = new List<Transaction>();
             _parent = parent;
+            _stat = new AssetStat();
         }
 
 

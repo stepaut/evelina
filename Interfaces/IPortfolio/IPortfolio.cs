@@ -15,9 +15,7 @@
         string Description { get; set; }
         #endregion
 
-        #region not_saveable
-        double Volume { get; set; }
-        #endregion
+        IPortfolioStat Stat { get; }
 
         IAsset CreateAsset(string assetName);
         IList<IAsset> GetAssets();

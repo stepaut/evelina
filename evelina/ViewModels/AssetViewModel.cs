@@ -27,30 +27,30 @@ namespace evelina.ViewModels
         {
             get
             {
-                if (Model?.Volume < IPortfolio.POSSIBLE_DELTA)
+                if (Model?.Stat.Volume < IPortfolio.POSSIBLE_DELTA)
                 {
                     return null;
                 }
 
-                return Model?.Volume;
+                return Model?.Stat.Volume;
             }
         }
-        public double? SellPrice => Model?.SellPrice;
+        public double? SellPrice => Model?.Stat.SellPrice;
         public double? Share
         {
             get
             {
-                if (Model?.Share < IPortfolio.POSSIBLE_DELTA / 100)
+                if (Model?.Stat.Share < IPortfolio.POSSIBLE_DELTA / 100)
                 {
                     return null;
                 }
 
-                return Model?.Share;
+                return Model?.Stat.Share;
             }
         }
-        public double? BuyedVolume => Model?.BuyedVolume;
-        public double? BuyedShare => Model?.BuyedShare;
-        public EAssetStatus? Status => Model?.Status;
+        public double? BuyedVolume => Model?.Stat.BuyedVolume;
+        public double? BuyedShare => Model?.Stat.BuyedShare;
+        public EAssetStatus? Status => Model?.Stat.Status;
         public bool? IsFree => Status is EAssetStatus.Free;
 
         public ObservableCollection<TransactionViewModel> Transactions { get; } = new();

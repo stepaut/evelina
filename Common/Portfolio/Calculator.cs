@@ -41,10 +41,10 @@
 
             foreach(var asset in _assets)
             {
-                res += asset.Volume;
+                res += asset.Stat.Volume;
             }
 
-            _portfolio.Volume = res;
+            _portfolio.Stat.Volume = res;
         }
 
         private void CalcVolume(IAsset asset)
@@ -66,35 +66,35 @@
                 }
             }
 
-            asset.Volume = volume;
-            asset.BuyedVolume = buyedVolume;
+            asset.Stat.Volume = volume;
+            asset.Stat.BuyedVolume = buyedVolume;
         }
 
         private void CalcShare(IAsset asset)
         {
-            asset.Share = asset.Volume / _portfolio.Volume * 100;
+            asset.Stat.Share = asset.Stat.Volume / _portfolio.Stat.Volume * 100;
 
             double? targetPortolioVolume = (asset.TargetVolume / asset.TargetShare) * 100;
 
             if (targetPortolioVolume.HasValue)
             {
-                asset.BuyedShare = asset.BuyedVolume / targetPortolioVolume.Value * 100;
+                asset.Stat.BuyedShare = asset.Stat.BuyedVolume / targetPortolioVolume.Value * 100;
             }
         }
 
         private void CalcStatus(IAsset asset)
         {
-            if (asset.BuyedVolume == 0)
+            if (asset.Stat.BuyedVolume == 0)
             {
-                asset.Status = EAssetStatus.Waiting;
+                asset.Stat.Status = EAssetStatus.Waiting;
                 return;
             }
 
-            asset.Status = EAssetStatus.Buyed;
+            asset.Stat.Status = EAssetStatus.Buyed;
 
-            if (asset.Volume <= IPortfolio.POSSIBLE_DELTA)
+            if (asset.Stat.Volume <= IPortfolio.POSSIBLE_DELTA)
             {
-                asset.Status = EAssetStatus.Free;
+                asset.Stat.Status = EAssetStatus.Free;
                 return;
             }
 
@@ -104,12 +104,12 @@
             }
 
 
-            if (Math.Abs(asset.BuyedVolume - asset.TargetVolume.Value) >= IPortfolio.POSSIBLE_DELTA)
+            if (Math.Abs(asset.Stat.BuyedVolume - asset.TargetVolume.Value) >= IPortfolio.POSSIBLE_DELTA)
             {
                 return;
             }
 
-            asset.Status = EAssetStatus.Buyed_fully;
+            asset.Stat.Status = EAssetStatus.Buyed_fully;
         }
     }
 }

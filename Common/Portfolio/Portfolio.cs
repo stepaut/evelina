@@ -10,13 +10,15 @@ namespace Db
         public string Name { get; set; }
 
         public string Description { get; set; }
-        public double Volume { get; set; }
 
         internal string Path { get; private set; }
+
+        public IPortfolioStat Stat => _stat;
 
 
         private List<Asset> _assets;
         private DispatcherTimer _updateStat;
+        private PortfolioStat _stat;
 
 
         private Portfolio(string id, long creationDate, string path = null) : base(id, creationDate, "")
@@ -24,6 +26,7 @@ namespace Db
             Path = path;
             Level = EItemLevel.Portfolio;
             _assets = new List<Asset>();
+            _stat = new PortfolioStat();
 
             _updateStat = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
             _updateStat.Tick += _updateStat_Tick;

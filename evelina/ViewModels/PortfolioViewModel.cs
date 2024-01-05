@@ -26,7 +26,7 @@ namespace evelina.ViewModels
 
 
         public string Name => Model?.Name;
-        public double? Volume => Model?.Volume;
+        public double? Volume => Model?.Stat.Volume;
 
         private AssetViewModel _selectedAsset = null;
         public AssetViewModel SelectedAsset
