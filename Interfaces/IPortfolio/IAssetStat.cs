@@ -1,6 +1,4 @@
-﻿using Db;
-
-namespace Db
+﻿namespace Db
 {
     public interface IAssetStat
     {

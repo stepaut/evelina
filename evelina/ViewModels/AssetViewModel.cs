@@ -110,7 +110,7 @@ namespace evelina.ViewModels
         {
             var box = MessageBoxManager.GetMessageBoxStandard(
                 "Deleting",
-                $"Are you sure to delete {vm.DisplayName}",
+                $"Are you sure to delete transaction from {vm.DatetimeString}",
                 ButtonEnum.YesNo);
 
             var res = await box.ShowAsync();
@@ -145,7 +145,7 @@ namespace evelina.ViewModels
 
         internal void RefreshTransactions()
         {
-            Transactions = new ObservableCollection<TransactionViewModel>(Transactions.OrderByDescending(x => x.Datetime));
+            Transactions = new ObservableCollection<TransactionViewModel>(Transactions.OrderByDescending(x => x.Model.Datetime));
         }
     }
 }

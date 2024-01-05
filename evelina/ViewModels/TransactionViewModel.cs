@@ -17,13 +17,12 @@ namespace evelina.ViewModels
         public ICommand DeleteCommand { get; }
 
 
-        public string DisplayName => $"{Model?.Type}: {Model?.Amount}";
-
-        public string DisplayDesctiption => $"{(Model != null ? new DateTime(Model.Datetime) : 0)}";
-
-        internal long? Datetime => Model?.Datetime;
-
-
+        public ETransaction? Type => Model?.Type;
+        public double? Amount => Model?.Amount;
+        public double? Price => Model?.Price;
+        public double? Volume => Model?.Volume;
+        public string DatetimeString => $"{(Model != null ? new DateTime(Model.Datetime) : 0)}";
+        
         internal ITransaction Model { get; private set; }
 
 

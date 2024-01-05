@@ -12,5 +12,7 @@
         #region additional
         string Note { get; set; }
         #endregion
+
+        double Volume => Price * Amount;
     }
 }
