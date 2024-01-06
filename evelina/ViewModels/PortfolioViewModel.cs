@@ -15,7 +15,7 @@ using VisualTools;
 
 namespace evelina.ViewModels
 {
-    public class PortfolioViewModel : WindowViewModelBase, IDisposable
+    public class PortfolioViewModel : WindowViewModelBase, IDisposable, IMenuCompatible
     {
         public ICommand CloseCommand { get; }
         public ICommand EditCommand { get; }
@@ -24,6 +24,7 @@ namespace evelina.ViewModels
         public ICommand ImportCommand { get; }
         public ICommand ExportCommand { get; }
         public ICommand ShowTableCommand { get; }
+        public ICommand ShowAssetsCommand { get; }
 
 
         public string Name => Model?.Name;
@@ -69,6 +70,7 @@ namespace evelina.ViewModels
             CreateAssetCommand = ReactiveCommand.Create(CreateAsset);
             ImportCommand = ReactiveCommand.Create(Import);
             ShowTableCommand = ReactiveCommand.Create(ShowTable);
+            ShowAssetsCommand = ReactiveCommand.Create(ShowAssets);
         }
 
 
@@ -223,8 +225,23 @@ namespace evelina.ViewModels
 
         private void ShowTable()
         {
+            if (_main.ActiveVM is AssetsTableViewModel)
+            {
+                return;
+            }
+
             AssetsTableViewModel vm = new AssetsTableViewModel(this, _main);
             _main.ActiveVM = vm;
+        }
+
+        private void ShowAssets()
+        {
+            if (_main.ActiveVM is PortfolioViewModel)
+            {
+                return;
+            }
+
+            _main.ActiveVM = this;
         }
     }
 }

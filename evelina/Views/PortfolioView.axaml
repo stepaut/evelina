@@ -8,85 +8,44 @@
              x:Class="evelina.Views.PortfolioView"
              x:DataType="vm:PortfolioViewModel">
 
-  <Grid RowDefinitions="auto,*">
-
-    <Border Grid.Row="0"
-            HorizontalAlignment="Stretch"
-            BorderThickness="1"
-            BorderBrush="Gray">
-      <Grid Margin="4"
-            ColumnDefinitions="auto,*">
-        <Grid Grid.Column="0"
-              ColumnDefinitions="*,*">
-          <Button Grid.Column="0"
-                  Content="Menu"
-                  HorizontalAlignment="Left">
-            <Button.Flyout>
-              <MenuFlyout>
-                <MenuItem Header="Save and Close"
-                          Command="{Binding CloseCommand}"/>
-                <MenuItem Header="Save"
-                          Command="{Binding SaveCommand}"/>
-                <MenuItem Header="Edit..."
-                          Command="{Binding EditCommand}"/>
-                <MenuItem Header="Import..."
-                          Command="{Binding ImportCommand}"/>
-                <MenuItem Header="Export..."
-                          Command="{Binding ExportCommand}"/>
-              </MenuFlyout>
-            </Button.Flyout>
-          </Button>
-          <Button Grid.Column="1"
-                  Content="Table"
-                  Command="{Binding ShowTableCommand}"/>
+  <Border Grid.Row="1">
+    <Grid ColumnDefinitions="*,4*">
+      <Border Grid.Column="0"
+              BorderThickness="1"
+              BorderBrush="Gray">
+        <Grid RowDefinitions="*,auto">
+          <ListBox Grid.Row="0"
+                   ItemsSource="{Binding Assets}"
+                   SelectedItem="{Binding SelectedAsset}"
+                   SelectionMode="Single"
+                   Background="White"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                   ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:AssetViewModel">
+                <Border Background="Transparent"
+                        DoubleTapped="Border_DoubleTapped">
+                  <Grid ColumnDefinitions="*,*">
+                    <TextBlock Grid.Column="0"
+                        Text="{Binding Name}"
+                               HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Status, Converter={StaticResource EnumDescriptionConverter}}"
+                               HorizontalAlignment="Right"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <Button Grid.Row="1"
+                  Content="Create new"
+                  Command="{Binding CreateAssetCommand}"
+                  HorizontalContentAlignment="Center"
+                  HorizontalAlignment="Stretch"/>
         </Grid>
-
-        <TextBlock Grid.Column="1"
-                    Text="{Binding Name}"
-                   Classes="h1"/>
-      </Grid>
-    </Border>
-
-    <Border Grid.Row="1">
-      <Grid ColumnDefinitions="*,4*">
-        <Border Grid.Column="0"
-                BorderThickness="1"
-                BorderBrush="Gray">
-          <Grid RowDefinitions="*,auto">
-            <ListBox Grid.Row="0"
-                     ItemsSource="{Binding Assets}"
-                     SelectedItem="{Binding SelectedAsset}"
-                     SelectionMode="Single"
-                     Background="White"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible">
-              <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="vm:AssetViewModel">
-                  <Border Background="Transparent"
-                          DoubleTapped="Border_DoubleTapped">
-                    <Grid ColumnDefinitions="*,*">
-                      <TextBlock Grid.Column="0"
-                          Text="{Binding Name}"
-                                 HorizontalAlignment="Left"/>
-                      <TextBlock Grid.Column="1"
-                                 Text="{Binding Status, Converter={StaticResource EnumDescriptionConverter}}"
-                                 HorizontalAlignment="Right"/>
-                    </Grid>
-                  </Border>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-            <Button Grid.Row="1"
-                    Content="Create new"
-                    Command="{Binding CreateAssetCommand}"
-                    HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Stretch"/>
-          </Grid>
-        </Border>
-        <view:AssetView Grid.Column="1"
-                        DataContext="{Binding SelectedAsset}"/>
-      </Grid>
-    </Border>
-
-  </Grid>
+      </Border>
+      <view:AssetView Grid.Column="1"
+                      DataContext="{Binding SelectedAsset}"/>
+    </Grid>
+  </Border>
 </UserControl>

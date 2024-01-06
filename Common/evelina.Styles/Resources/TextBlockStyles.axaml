@@ -32,4 +32,12 @@
   <Style Selector="TextBlock.h4">
     <Setter Property="FontSize" Value="18"/>
   </Style>
+
+  <Style Selector="Button.inMenu">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Height" Value="40"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
 </Styles>

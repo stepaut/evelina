@@ -1,20 +1,14 @@
-﻿using ReactiveUI;
-using System;
-using System.Windows.Input;
+﻿using System;
 
 namespace evelina.ViewModels
 {
-    public class AssetsTableViewModel : WindowViewModelBase, IDisposable
+    public class AssetsTableViewModel : WindowViewModelBase, IDisposable, IMenuCompatible
     {
-        public ICommand BackCommand { get; }
-
         public PortfolioViewModel Portfolio { get; private set; }
 
         public AssetsTableViewModel(PortfolioViewModel portfolio, MainViewModel main) : base(main)
         {
             Portfolio = portfolio;
-
-            BackCommand = ReactiveCommand.Create(TurnBack);
         }
 
         public void Dispose()
