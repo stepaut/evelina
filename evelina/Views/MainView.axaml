@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:mat="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
              xmlns:vm="clr-namespace:evelina.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="evelina.Views.MainView"
@@ -10,6 +12,82 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <ContentControl Content="{Binding ActiveVM}"/>
+  <!--<ContentControl Content="{Binding ActiveVM}"/>-->
+
+  <mat:NavigationDrawer Name="LeftDrawer" 
+                        Classes="permanent"
+                        LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+    <mat:NavigationDrawer.LeftDrawerContent>
+      <ScrollViewer>
+        <StackPanel>
+          <mat:ColorZone Mode="Standard" Height="180">
+            <StackPanel>
+              <TextBlock Classes="Headline6" Text="Material Design" HorizontalAlignment="Center" />
+            </StackPanel>
+          </mat:ColorZone>
+          
+          <ListBox Classes="NoScroll" Name="DrawerList"
+                   Focusable="{Binding ElementName=LeftDrawer, Path=LeftDrawerOpened}">
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Height" Value="48" />
+                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+              </Style>
+            </ListBox.Styles>
+            <ListBoxItem>Home</ListBoxItem>
+            <ListBoxItem>Buttons</ListBoxItem>
+            <ListBoxItem>Toggles</ListBoxItem>
+            <ListBoxItem>Fields</ListBoxItem>
+          </ListBox>
+        </StackPanel>
+      </ScrollViewer>
+    </mat:NavigationDrawer.LeftDrawerContent>
+    <DockPanel LastChildFill="true">
+      <mat:ColorZone Name="PART_AppBarContainer" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                          DockPanel.Dock="Top"
+                          Height="56" Mode="PrimaryMid" ZIndex="1">
+        <Grid Margin="16">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition Width="32" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="32" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <ToggleButton Name="NavDrawerSwitch"
+                        Width="32" Height="32" Padding="4">
+            <icons:MaterialIcon Kind="Menu" Width="24" Height="24" />
+          </ToggleButton>
+          <TextBlock Grid.Column="2" Classes="Headline6" Text="Material.Avalonia Demo"
+                     VerticalAlignment="Center" />
+          <Menu Grid.Column="4" Height="32" Padding="0" Margin="0">
+            <MenuItem Height="32" Width="32" Header="{icons:MaterialIconExt DotsVertical, Size=24}">
+              <MenuItem Header="Hello!">
+                <MenuItem.Icon>
+                  <icons:MaterialIcon Kind="Hand" Width="24" Height="24" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Connect to network">
+                <MenuItem.Icon>
+                  <icons:MaterialIcon Kind="RocketLaunch" Width="24" Height="24" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator />
+              <MenuItem Header="Action 1" />
+              <MenuItem Header="Action 2" />
+              <MenuItem Header="Action 3" />
+              <Separator />
+            </MenuItem>
+          </Menu>
+        </Grid>
+      </mat:ColorZone>
+      
+    </DockPanel>
+  </mat:NavigationDrawer>
   
+  
+  
+
+
 </UserControl>

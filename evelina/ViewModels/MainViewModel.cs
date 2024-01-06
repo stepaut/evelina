@@ -11,6 +11,13 @@ public class MainViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _activeVM, value);
     }
 
+    private bool _showMenu = true;
+    public bool ShowMenu
+    {
+        get => _showMenu;
+        set => this.RaiseAndSetIfChanged(ref _showMenu, value);
+    }
+
 
     public MainViewModel()
     {
