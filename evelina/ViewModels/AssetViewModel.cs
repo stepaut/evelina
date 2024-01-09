@@ -59,6 +59,8 @@ namespace evelina.ViewModels
 
         public ObservableCollection<TransactionViewModel> Transactions { get; private set; }
 
+        public ObservableCollection<TargetViewModel> Targets { get; private set; }
+
         internal IAsset Model { get; private set; }
 
 
@@ -66,6 +68,7 @@ namespace evelina.ViewModels
         {
             Model = model;
             Transactions = new();
+            Targets = new();
 
             foreach (ITransaction transaction in model.GetTransactions())
             {

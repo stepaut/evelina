@@ -87,7 +87,7 @@ namespace Db
                 return false;
             }
 
-            bool ok = PortfolioFactory.SavePortfolio(this, Path);
+            bool ok = PortfolioFactory.SavePortfolio(this, path);
 
             if (ok)
             {
