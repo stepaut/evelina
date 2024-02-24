@@ -7,6 +7,8 @@
         event UpdateVisualStat UpdateVisualStatEvent;
         const double POSSIBLE_DELTA = 1;
 
+        NLog.Logger Logger { get; }
+
         #region required
         string Name { get; set; }
         #endregion

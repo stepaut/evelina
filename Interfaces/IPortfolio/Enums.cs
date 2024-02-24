@@ -24,7 +24,7 @@ namespace Db
         Buyed,
         [Description("buyed fully")]
         Buyed_fully,
-        [Description("Free")]
+        [Description("free")]
         Free,
     }
 }

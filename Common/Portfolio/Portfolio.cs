@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Avalonia.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Db
 {
@@ -14,6 +15,8 @@ namespace Db
         internal string Path { get; private set; }
 
         public IPortfolioStat Stat => _stat;
+
+        public NLog.Logger Logger { get; }
 
 
         private List<Asset> _assets;
@@ -30,6 +33,8 @@ namespace Db
 
             _updateStat = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
             _updateStat.Tick += _updateStat_Tick;
+
+            Logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
 
@@ -87,7 +92,7 @@ namespace Db
                 return false;
             }
 
-            bool ok = PortfolioFactory.SavePortfolio(this, Path);
+            bool ok = PortfolioFactory.SavePortfolio(this, path);
 
             if (ok)
             {

@@ -27,6 +27,8 @@
                 CalcShare(asset);
                 CalcStatus(asset);
             }
+
+            CheckPortfolio();
         }
 
         public void Dispose()
@@ -103,13 +105,38 @@
                 return;
             }
 
-
             if (Math.Abs(asset.Stat.BuyedVolume - asset.TargetVolume.Value) >= IPortfolio.POSSIBLE_DELTA)
             {
                 return;
             }
 
             asset.Stat.Status = EAssetStatus.Buyed_fully;
+        }
+
+        private void CheckPortfolio()
+        {
+            foreach (var asset in _assets)
+            {
+                CheckAsset(asset);
+            }
+        }
+
+        private void CheckAsset(IAsset asset)
+        {
+            if (asset.Stat.Volume < 0)
+            {
+                _portfolio.Logger.Warn($"Asset {asset.Name}: Colume is incorrect");
+            }
+
+            if (asset.Stat.Share < 0 || asset.Stat.Share > 100)
+            {
+                _portfolio.Logger.Warn($"Asset {asset.Name}: Share is incorrect");
+            }
+
+            if (asset.Stat.Amount < 0)
+            {
+                _portfolio.Logger.Warn($"Asset {asset.Name}: Amount is incorrect");
+            }
         }
     }
 }

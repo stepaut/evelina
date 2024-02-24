@@ -71,8 +71,9 @@ namespace evelina.ViewModels
             }
 
             var portfolioVM = new PortfolioViewModel(portfolio, _main);
-            //portfolioVM.ReturnBackEvent += () => { _main.ActiveVM = this; };
             _main.ActiveVM = portfolioVM;
+
+            portfolio.Logger.Info("test");
         }
 
         private async void OpenPortfolio()
